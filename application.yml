@@ -1,0 +1,47 @@
+spring:
+  profiles:
+    active: local
+
+server:
+  port: 8082
+
+mybatis:
+  mapper-locations: mybatis/mapper/**/*.xml
+
+---
+spring:
+  profiles: local
+
+  datasource:
+    maindb:
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+      jdbcUrl: jdbc:oracle:thin:@10.211.55.4:1526:NO03
+      username: tmall
+      password: tmall
+      validation-query: select 1 from dual
+
+---
+spring:
+  profiles: dev
+
+  datasource:
+    maindb:
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+      jdbcUrl: jdbc:oracle:thin:@10.40.44.105:10101:TMALL
+      username: tmall
+      password: tmall#stg1
+      validation-query: select 1 from dual
+
+
+---
+spring:
+  profiles: stage
+
+  datasource:
+    maindb:
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+      jdbcUrl: jdbc:oracle:thin:@172.18.176.69:1525:TMALL
+      username: tmall
+      password: tmall#stg1
+      validation-query: select 1 from dual
+
