@@ -18,10 +18,12 @@ public class SqasRestController {
     SqasService sqasService;
 
     @RequestMapping(value = {"sqlApplicationList/{dbName}/{commandType}/{owner}/{tableName}"})
-    public List<SqlAreaVO> sqlApplicationList(@PathVariable final String dbName, @PathVariable final String commandType, @PathVariable final String owner, @PathVariable final String tableName) {
+    public List<SqlAreaVO> sqlApplicationList(
+            @PathVariable final String dbName, @PathVariable final String commandType,
+            @PathVariable final String owner, @PathVariable final String tableName) {
 
         List<SqlAreaVO> sqlareaList = null;
-        System.out.println("/sqlListByObject/owner:"+ owner + "/name:" + tableName + "/commandType:" + commandType);
+        System.out.println("/api/sqlListByObject/owner:"+ owner + "/name:" + tableName + "/commandType:" + commandType);
 
         HashMap<String, Object> inParam = new HashMap<>();
         inParam.put("owner", owner);
@@ -35,5 +37,38 @@ public class SqasRestController {
         }
 
         return sqlareaList;
+    }
+
+    @RequestMapping(value = {"sqlDetail/{dbName}/{searchType}/{searchString}"})
+    public List<SqlAreaVO> sqlDetail(
+            @PathVariable final String dbName, @PathVariable final String searchType,
+            @PathVariable final String searchString) {
+        System.out.println("/api/sqlDetail/dbName:"+ dbName + "/searchType:" + searchType + "/searchString:" + searchString);
+
+        List<SqlAreaVO> sqlAreaDetail = null;
+
+        HashMap<String, Object> inParam = new HashMap<>();
+        inParam.put("dbName", dbName);
+        inParam.put("searchType", searchType);
+//        inParam.put("sqlId", searchString);
+
+        System.out.println("inparam1: " + inParam.toString());
+
+        if (searchType.equals("SQLID")) {
+            inParam.put("sqlId", searchString);
+            System.out.println("inparam2: " + inParam.toString());
+        } else if (searchType.equals("SQLNAME")) {
+            inParam.put("sqlName", searchString);
+            System.out.println("inparam2-2: " + inParam.toString() );
+        }
+
+        if (searchType != null && searchString != null) {
+            sqlAreaDetail = sqasService.getSqlAreaDetail(inParam);
+            System.out.println("inparam3: " + inParam.toString() + " sqlId: " + sqlAreaDetail.size());
+        } else {
+            return null;
+        }
+
+        return sqlAreaDetail;
     }
 }

@@ -14,4 +14,6 @@ import java.util.Map;
 public interface SqlAreaMapper {
     List<SqlAreaVO> getSqlAreaListAll();
     List<SqlAreaVO> getSqlAreaList(HashMap<String, Object> inparam);
+
+    List<SqlAreaVO> getSqlAreaDetail(HashMap<String, Object> inparam);
 }

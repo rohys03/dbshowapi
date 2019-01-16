@@ -8,4 +8,6 @@ import java.util.List;
 public interface SqasService {
     List<SqlAreaVO> getSqlAreaListAll();
     List<SqlAreaVO> getSqlAreaList(HashMap<String, Object> inParam);
+
+    List<SqlAreaVO> getSqlAreaDetail(HashMap<String, Object> inParam);
 }

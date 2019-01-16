@@ -25,4 +25,11 @@ public class SqasServiceImpl implements SqasService {
 //        System.out.println("/sqasServiceImpl/owner:"+ owner + "/name:" + name + "/commandType:" + commandType);
         return sqlAreaMapper.getSqlAreaList(inParam);
     }
+
+    @Override
+    public List<SqlAreaVO> getSqlAreaDetail(HashMap<String, Object> inParam) {
+//        System.out.println("/sqasServiceImpl/owner:"+ owner + "/name:" + name + "/commandType:" + commandType);
+        return sqlAreaMapper.getSqlAreaDetail(inParam);
+    }
+
 }

@@ -16,4 +16,5 @@ public class SqlAreaVO {
     private String firstLoadTime;
     private String commandType;
     private String sqlText;
+    private String sqlFullText;
 }

@@ -3,9 +3,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.st11.dbshowapi.repository.SqlAreaMapper">
+
+    <resultMap id="sqlAreaVo" type="com.st11.dbshowapi.repository.SqlAreaVO">
+        <result property="instId" column="instId" jdbcType="NUMERIC" javaType="int" />
+        <result property="sqlId" column="sqlId" jdbcType="VARCHAR" javaType="String" />
+        <result property="planHashValue" column="planHashValue" />
+        <result property="parsingSchemaName" column="parsingSchemaName" />
+        <result property="module" column="module" />
+        <result property="program_id" column="program_id" />
+        <result property="executions" column="executions" />
+        <result property="blockPerExec" column="blockPerExec" />
+        <result property="lastActiveTime" column="lastActiveTime" />
+        <result property="firstLoadTime" column="firstLoadTime" />
+        <result property="commandType" column="commandType" />
+        <result property="sqlFullText" column="sqlFullText" jdbcType="CLOB" javaType="String" />
+    </resultMap>
+
+
     <select id="getSqlAreaListAll" resultType="com.st11.dbshowapi.repository.SqlAreaVO">
         <![CDATA[
-        select
+        Select /* sqasMapper.xml/getSqlAreaListAll - ns: SqlAreaMapper by rohys03 */
           sql_id sqlId,
           sql_text sqlText,
           (SELECT name FROM audit_actions WHERE ACTION = s.command_type) commandType,
@@ -16,7 +33,8 @@
           first_load_time firstLoadTime,
           child_number childNumber,
           parsing_schema_name parsingSchemaName
-        From temp$sql s
+--         From temp$sql s
+        From gv$sql s
         where 1=1
         and rownum <= 10
         ]]>
@@ -68,7 +86,7 @@
                      ) a
               where  sql_rn = 1
             )
-            select /* sqasMapper.xml/getSqlareaList - getSqlAreaList by rohys03 */ /*+ ordered use_hash(b) no_swap_join_inputs(b) */
+            select /* sqasMapper.xml/getSqlareaList - ns: SqlAreaMapper by rohys03 */ /*+ ordered use_hash(b) no_swap_join_inputs(b) */
                    b.inst_id instId,
                    b.sql_id sqlId,
                    b.plan_hash_value planHasshValue,
@@ -93,4 +111,27 @@
                           )
         ]]>
     </select>
+
+    <select id="getSqlAreaDetail" parameterType="hashmap" resultMap="sqlAreaVo">
+        <![CDATA[
+            select /* sqasMapper.xml/getSqlAreaDetail - ns: SqlAreaMapper by rohys03 */
+            b.inst_id instId,
+            b.sql_id sqlId,
+            b.plan_hash_value planHashValue,
+            b.parsing_schema_name parsingSchemaName,
+            b.module module,
+            case when b.program_id = 0 then null else b.program_id end as program_id,
+            b.executions executions,
+            round( b.buffer_gets / decode( b.executions, 0, 1, b.executions ) ) as blockPerExec,
+            b.last_active_time lastActiveTime,
+            b.first_load_time firstLoadTime,
+            b.Command_type commandType,
+            b.sql_fulltext sqlFullText
+            from   gv$sqlarea b
+            where 1=1
+            and sql_id = #{sqlId}
+            and rownum = 1
+        ]]>
+    </select>
+
 </mapper>
