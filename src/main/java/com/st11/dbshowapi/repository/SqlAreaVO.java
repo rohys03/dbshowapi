@@ -11,6 +11,7 @@ public class SqlAreaVO {
     private String module;
     private String programId;
     private String executions;
+    private String bufferGets;
     private String blockPerExec;
     private String lastActiveTime;
     private String firstLoadTime;

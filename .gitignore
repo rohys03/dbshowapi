@@ -1,7 +1,6 @@
 .gradle
 !gradle/wrapper/gradle-wrapper.jar
 build/classes
-!build/libs
 build/reports
 build/resources
 build/test-results

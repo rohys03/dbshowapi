@@ -94,6 +94,7 @@
                    b.module module,
                    case when b.program_id = 0 then null else b.program_id end as program_id,
                    b.executions executions,
+                   b.buffer_gets bufferGets,
                    round( b.buffer_gets / decode( b.executions, 0, 1, b.executions ) ) as blockPerExec,
                    b.last_active_time lastActiveTime,
                    b.first_load_time firstLoadTime,
@@ -122,6 +123,7 @@
             b.module module,
             case when b.program_id = 0 then null else b.program_id end as program_id,
             b.executions executions,
+            b.buffer_gets bufferGets,
             round( b.buffer_gets / decode( b.executions, 0, 1, b.executions ) ) as blockPerExec,
             b.last_active_time lastActiveTime,
             b.first_load_time firstLoadTime,
@@ -129,7 +131,7 @@
             b.sql_fulltext sqlFullText
             from   gv$sqlarea b
             where 1=1
-            and sql_id = #{sqlId}
+            and sql_id = #{searchString}
             and rownum = 1
         ]]>
     </select>

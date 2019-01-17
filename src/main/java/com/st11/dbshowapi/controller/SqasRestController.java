@@ -50,17 +50,9 @@ public class SqasRestController {
         HashMap<String, Object> inParam = new HashMap<>();
         inParam.put("dbName", dbName);
         inParam.put("searchType", searchType);
-//        inParam.put("sqlId", searchString);
+        inParam.put("searchString", searchString);
 
         System.out.println("inparam1: " + inParam.toString());
-
-        if (searchType.equals("SQLID")) {
-            inParam.put("sqlId", searchString);
-            System.out.println("inparam2: " + inParam.toString());
-        } else if (searchType.equals("SQLNAME")) {
-            inParam.put("sqlName", searchString);
-            System.out.println("inparam2-2: " + inParam.toString() );
-        }
 
         if (searchType != null && searchString != null) {
             sqlAreaDetail = sqasService.getSqlAreaDetail(inParam);
