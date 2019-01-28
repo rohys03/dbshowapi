@@ -18,13 +18,13 @@ public class SystemInfoRestController {
     @Autowired
     private SystemInfoService systemInfoService;
 
-    @RequestMapping(value = {"referencdObject/{dbName}/{objectType}/{owner}/{objectName}"})
+    @RequestMapping(value = {"referencedObject/{dbName}/{objectType}/{owner}/{objectName}"})
     public List<RefObjectVO> referencedObject(
             @PathVariable final String dbName, @PathVariable final String objectType,
             @PathVariable final String owner, @PathVariable final String objectName) {
 
         List<RefObjectVO> refObjects = null;
-        System.out.println("/api/referencdObject/owner:"+ owner + "/name:" + objectName + "/commandType:" + objectType);
+        System.out.println("/api/referencedObject/owner:"+ owner + "/name:" + objectName + "/commandType:" + objectType);
 
         HashMap<String, Object> inParam = new HashMap<>();
         inParam.put("owner", owner);
