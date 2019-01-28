@@ -2,11 +2,27 @@ spring:
   profiles:
     active: dev
 
+  jpa:
+    show-sql: true
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+#        enable_lazy_load_no_trans: true #Lazy Load 를 적용하기 위한 설정
+
 server:
   port: 8082
 
 mybatis:
   mapper-locations: mybatis/mapper/**/*.xml
+#
+#
+#logging:
+#  level:
+#    org.hibernate.SQL: debug
 
 ---
 spring:
