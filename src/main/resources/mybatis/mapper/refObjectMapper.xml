@@ -11,12 +11,14 @@
           , TYPE objectType
           , OWNER owner
           , NAME objectName
+          , STATUS status
           , PATH referencedPath
         FROM (
         select '1' as DEPTH,
                status,
                object_type type,
-               owner, object_name name,
+               owner,
+               object_name name,
                0 rn       ,
                OBJECT_NAME PATH
         from   dba_objects
