@@ -71,7 +71,7 @@
 
         order by rn
         )
-        WHERE STATUS <> 'INVALID'
+--         WHERE STATUS <> 'INVALID'
         ]]>
     </select>
 
