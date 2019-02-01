@@ -2,6 +2,8 @@ package com.st11.dbshowapi.service;
 
 import com.st11.dbshowapi.repository.SqlAreaMapper;
 import com.st11.dbshowapi.repository.SqlAreaVO;
+import com.st11.dbshowapi.repository.TopSqlMapper;
+import com.st11.dbshowapi.repository.TopSqlVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,9 @@ public class SqasServiceImpl implements SqasService {
 
     @Autowired
     SqlAreaMapper sqlAreaMapper;
+
+    @Autowired
+    TopSqlMapper topSqlMapper;
 
     @Override
     public List<SqlAreaVO> getSqlAreaListAll() {
@@ -32,4 +37,8 @@ public class SqasServiceImpl implements SqasService {
         return sqlAreaMapper.getSqlAreaDetail(inParam);
     }
 
+    @Override
+    public List<TopSqlVO> getTopSqlList(HashMap<String, Object> inParam) {
+        return topSqlMapper.getTopSqlList(inParam);
+    }
 }

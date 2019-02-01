@@ -13,6 +13,10 @@ spring:
         use_sql_comments: true
 #        enable_lazy_load_no_trans: true #Lazy Load 를 적용하기 위한 설정
 
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+
 server:
   port: 8082
 
@@ -43,9 +47,12 @@ spring:
   datasource:
     maindb:
       driver-class-name: oracle.jdbc.driver.OracleDriver
-      jdbcUrl: jdbc:oracle:thin:@10.40.62.151:10101:TMALL
-      username: tmall
-      password: tmall#stg1
+      jdbcUrl: ENC(UdKSqNMY+zgn6S1JtqtNCpYewWzZm5o9ZVQYVdkINidqvOFNSFWsyPQ4IUqD/XanUTiTX/CEo8c=)
+      username: ENC(yPbM1vLi+1nHuoyuZpeOsg==)
+      password: ENC(u0CttoN5TVx7k1LTWHtw9W68Nmqg4mpy)
+#      jdbcUrl: jdbc:oracle:thin:@10.40.62.151:10101:TMALL
+#      username: tmall
+#      password: tmall#stg1
       validation-query: select 1 from dual
 
 
@@ -56,8 +63,8 @@ spring:
   datasource:
     maindb:
       driver-class-name: oracle.jdbc.driver.OracleDriver
-      jdbcUrl: jdbc:oracle:thin:@172.18.176.69:1525:TMALL
-      username: tmall
-      password: tmall#stg1
+      jdbcUrl: ENC(IZXxvwjYprSzwzGeSj5H6nU8IST02+U/5k9GmXSqWxn+cO5GKRb9fTYeccPSE/Rbs2pTsCqmXxg=)
+      username: ENC(Ln33hSqTbEALKgI2JXYTxA==)
+      password: ENC(p+gZKHqWZblFUQRL24vQKmwcxHHs5ir8)
       validation-query: select 1 from dual
 

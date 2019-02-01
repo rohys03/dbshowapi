@@ -1,6 +1,7 @@
 package com.st11.dbshowapi.controller;
 
 import com.st11.dbshowapi.repository.SqlAreaVO;
+import com.st11.dbshowapi.repository.TopSqlVO;
 import com.st11.dbshowapi.service.SqasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,5 +63,30 @@ public class SqasRestController {
         }
 
         return sqlAreaDetail;
+    }
+    @RequestMapping(value = {"topSqlList/{dbName}/{instId}/{date}/{orderColumn}"})
+    public List<TopSqlVO> topSqlList(
+            @PathVariable final String dbName, @PathVariable final String instId,
+            @PathVariable final String date, @PathVariable final String orderColumn) {
+        System.out.println("/api/topSqlList/dbName:"+ dbName + "/instId:" + instId + "/date:" + date + "/orderColumn:" + orderColumn);
+
+        List<TopSqlVO> topsqlList = null;
+
+        HashMap<String, Object> inParam = new HashMap<>();
+        inParam.put("dbName", dbName);
+        inParam.put("instId", instId);
+        inParam.put("date", date);
+        inParam.put("orderColumn", orderColumn);
+
+        System.out.println("inparam1: " + inParam.toString());
+
+        if (dbName != null && instId != null) {
+            topsqlList = sqasService.getTopSqlList(inParam);
+            System.out.println("inparam2: " + inParam.toString() + " listSize: " + topsqlList.size());
+        } else {
+            return null;
+        }
+
+        return topsqlList;
     }
 }
