@@ -50,11 +50,7 @@ spring:
       jdbcUrl: ENC(UdKSqNMY+zgn6S1JtqtNCpYewWzZm5o9ZVQYVdkINidqvOFNSFWsyPQ4IUqD/XanUTiTX/CEo8c=)
       username: ENC(yPbM1vLi+1nHuoyuZpeOsg==)
       password: ENC(u0CttoN5TVx7k1LTWHtw9W68Nmqg4mpy)
-#      jdbcUrl: jdbc:oracle:thin:@10.40.62.151:10101:TMALL
-#      username: tmall
-#      password: tmall#stg1
       validation-query: select 1 from dual
-
 
 ---
 spring:

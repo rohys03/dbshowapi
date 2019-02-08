@@ -1,6 +1,7 @@
 package com.st11.dbshowapi.controller;
 
 
+import com.st11.dbshowapi.repository.DaSyncTablesVO;
 import com.st11.dbshowapi.repository.RefObjectVO;
 import com.st11.dbshowapi.service.SystemInfoService;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
@@ -39,6 +40,23 @@ public class SystemInfoRestController {
         }
 
         return refObjects;
+    }
+
+    @GetMapping(value = {"daSyncData/{tableName}"})
+    public List<DaSyncTablesVO> daSyncData(
+            @PathVariable final String tableName) {
+
+        List<DaSyncTablesVO> daSyncTablesVOList = null;
+        System.out.println("/api/daSyncData/objectName:" + tableName);
+
+        HashMap<String, Object> inParam = new HashMap<>();
+        inParam.put("tableName", tableName);
+
+        if (tableName != null) {
+            daSyncTablesVOList = systemInfoService.getSyncTableList(inParam);
+        }
+
+        return daSyncTablesVOList;
     }
 
     @GetMapping(value = {"getEncryptString/{string:.+}"})
