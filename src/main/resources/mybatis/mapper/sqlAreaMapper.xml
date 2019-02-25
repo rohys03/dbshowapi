@@ -98,8 +98,13 @@
                    round( b.buffer_gets / decode( b.executions, 0, 1, b.executions ) ) as blockPerExec,
                    b.last_active_time lastActiveTime,
                    b.first_load_time firstLoadTime,
-                   b.Command_type commandType,
-                   dbms_lob.substr( sql_fulltext, 2000, 1      ) as sqlText
+--                    b.Command_type commandType,
+                   (select c.command_name from v$sqlcommand c where c.command_type = b.command_type) commandType,
+                   dbms_lob.substr( sql_fulltext, 2000, 1      ) as sqlText,
+                   case when ( (regexp_instr(sql_text, '\/\*[^+]',1) > 0 ) and (regexp_instr(sql_text, '\*\/', 1) > 0) )
+                        then trim(substr(sql_text, regexp_instr(substr(sql_text, 1, 100) , '\/\*[^+]',1), regexp_instr(sql_text, '\*\/', decode(regexp_instr(sql_text, '\/\*[^+]',1), 0, 1, regexp_instr(sql_text, '\/\*[^+]',1))) - regexp_instr(sql_text, '\/\*[^+]',1) + 2))
+                   else ''
+                   end sqlName
             from   sqlarea a,
                    gv$sqlarea b
             where  a.inst_id = b.inst_id
@@ -116,19 +121,24 @@
     <select id="getSqlAreaDetail" parameterType="hashmap" resultMap="sqlAreaVo">
         <![CDATA[
             select /* sqlAreaMapper.xml/getSqlAreaDetail - ns: SqlAreaMapper by rohys03 */
-            b.inst_id instId,
-            b.sql_id sqlId,
-            b.plan_hash_value planHashValue,
-            b.parsing_schema_name parsingSchemaName,
-            b.module module,
-            case when b.program_id = 0 then null else b.program_id end as program_id,
-            b.executions executions,
-            b.buffer_gets bufferGets,
-            round( b.buffer_gets / decode( b.executions, 0, 1, b.executions ) ) as blockPerExec,
-            b.last_active_time lastActiveTime,
-            b.first_load_time firstLoadTime,
-            b.Command_type commandType,
-            b.sql_fulltext sqlFullText
+                b.inst_id instId,
+                b.sql_id sqlId,
+                b.plan_hash_value planHashValue,
+                b.parsing_schema_name parsingSchemaName,
+                b.module module,
+                case when b.program_id = 0 then null else b.program_id end as program_id,
+                b.executions executions,
+                b.buffer_gets bufferGets,
+                round( b.buffer_gets / decode( b.executions, 0, 1, b.executions ) ) as blockPerExec,
+                b.last_active_time lastActiveTime,
+                b.first_load_time firstLoadTime,
+--                 b.Command_type commandType,
+                (select c.command_name from v$sqlcommand c where c.command_type = b.command_type) commandType,
+                b.sql_fulltext sqlFullText,
+                case when ( (regexp_instr(sql_text, '\/\*[^+]',1) > 0 ) and (regexp_instr(sql_text, '\*\/', 1) > 0) )
+                    then trim(substr(sql_text, regexp_instr(substr(sql_text, 1, 100) , '\/\*[^+]',1), regexp_instr(sql_text, '\*\/', decode(regexp_instr(sql_text, '\/\*[^+]',1), 0, 1, regexp_instr(sql_text, '\/\*[^+]',1))) - regexp_instr(sql_text, '\/\*[^+]',1) + 2))
+                else ''
+                end sqlName
             from   gv$sqlarea b
             where 1=1
             and sql_id = #{searchString}

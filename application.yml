@@ -33,7 +33,7 @@ spring:
   profiles: local
 
   datasource:
-    maindb:
+    dadb:
       driver-class-name: oracle.jdbc.driver.OracleDriver
       jdbcUrl: jdbc:oracle:thin:@10.211.55.4:1526:NO03
       username: tmall
@@ -45,7 +45,7 @@ spring:
   profiles: dev
 
   datasource:
-    maindb:
+    dadb:
       driver-class-name: oracle.jdbc.driver.OracleDriver
       jdbcUrl: ENC(UdKSqNMY+zgn6S1JtqtNCpYewWzZm5o9ZVQYVdkINidqvOFNSFWsyPQ4IUqD/XanUTiTX/CEo8c=)
       username: ENC(yPbM1vLi+1nHuoyuZpeOsg==)
@@ -57,7 +57,27 @@ spring:
   profiles: stage
 
   datasource:
-    maindb:
+    dadb:
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+      jdbcUrl: ENC(IZXxvwjYprSzwzGeSj5H6nU8IST02+U/5k9GmXSqWxn+cO5GKRb9fTYeccPSE/Rbs2pTsCqmXxg=)
+      username: ENC(Ln33hSqTbEALKgI2JXYTxA==)
+      password: ENC(p+gZKHqWZblFUQRL24vQKmwcxHHs5ir8)
+      validation-query: select 1 from dual
+
+
+---
+spring:
+  profiles: dqmwas
+
+  datasource:
+    dadb:
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+      jdbcUrl: jdbc:oracle:thin:@172.28.68.78:PMETA2
+      username: dauser
+      password: dauser#ved1004
+      validation-query: select 1 from dual
+
+    stgdb:
       driver-class-name: oracle.jdbc.driver.OracleDriver
       jdbcUrl: ENC(IZXxvwjYprSzwzGeSj5H6nU8IST02+U/5k9GmXSqWxn+cO5GKRb9fTYeccPSE/Rbs2pTsCqmXxg=)
       username: ENC(Ln33hSqTbEALKgI2JXYTxA==)
