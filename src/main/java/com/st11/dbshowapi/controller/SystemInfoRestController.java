@@ -28,17 +28,17 @@ public class SystemInfoRestController {
     public List<DaTableVO> daTable(
             @PathVariable final String tableName) {
 
-        List<DaTableVO> daTablesVOList = null;
+        List<DaTableVO> daTableVOList = null;
         System.out.println("/api/daTable/tableName:" + tableName);
 
         HashMap<String, Object> inParam = new HashMap<>();
         inParam.put("tableName", tableName);
 
         if (tableName != null) {
-            daTablesVOList = systemInfoService.getTableList(inParam);
+            daTableVOList = systemInfoService.getTableList(inParam);
         }
 
-        return daTablesVOList;
+        return daTableVOList;
     }
 
     @GetMapping(value = {"referencedObject/{dbName}/{objectType}/{owner}/{objectName}"})
@@ -66,7 +66,7 @@ public class SystemInfoRestController {
             @PathVariable final String tableName) {
 
         List<DaSyncTableVO> daSyncTablesVOList = null;
-        System.out.println("/api/daSyncData/objectName:" + tableName);
+        System.out.println("/api/daSyncData/tableName:" + tableName);
 
         HashMap<String, Object> inParam = new HashMap<>();
         inParam.put("tableName", tableName);
