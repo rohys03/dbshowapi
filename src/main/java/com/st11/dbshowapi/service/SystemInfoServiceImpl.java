@@ -1,9 +1,6 @@
 package com.st11.dbshowapi.service;
 
-import com.st11.dbshowapi.repository.DaSyncTablesMapper;
-import com.st11.dbshowapi.repository.DaSyncTablesVO;
-import com.st11.dbshowapi.repository.RefObjectMapper;
-import com.st11.dbshowapi.repository.RefObjectVO;
+import com.st11.dbshowapi.repository.object.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,18 +11,19 @@ import java.util.List;
 public class SystemInfoServiceImpl implements SystemInfoService {
 
     @Autowired
-    RefObjectMapper refObjectMapper;
-
-    @Autowired
-    DaSyncTablesMapper daSyncTablesMapper;
+    DaObjectMapper daTableMapper;
 
     @Override
     public List<RefObjectVO> getRefObjectList(HashMap<String, Object> inparam) {
-        return refObjectMapper.getRefObjectList(inparam);
+        return daTableMapper.getRefObjectList(inparam);
     }
     @Override
-    public List<DaSyncTablesVO> getSyncTableList(HashMap<String, Object> inparam) {
-        return daSyncTablesMapper.getSyncTableList(inparam);
+    public List<DaSyncTableVO> getSyncTableList(HashMap<String, Object> inparam) {
+        return daTableMapper.getSyncTableList(inparam);
     }
 
+    @Override
+    public List<DaTableVO> getTableList(HashMap<String, Object> inparam) {
+        return daTableMapper.getTableList(inparam);
+    }
 }

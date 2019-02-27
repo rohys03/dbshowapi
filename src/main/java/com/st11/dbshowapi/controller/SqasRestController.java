@@ -1,7 +1,7 @@
 package com.st11.dbshowapi.controller;
 
-import com.st11.dbshowapi.repository.SqlAreaVO;
-import com.st11.dbshowapi.repository.TopSqlVO;
+import com.st11.dbshowapi.repository.sql.SqlAreaVO;
+import com.st11.dbshowapi.repository.sql.TopSqlVO;
 import com.st11.dbshowapi.service.SqasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;

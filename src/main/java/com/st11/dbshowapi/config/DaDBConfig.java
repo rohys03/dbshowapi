@@ -29,7 +29,7 @@ public class DaDBConfig {
     @Bean(name= "dadbDataSource")
     @Primary
     @ConfigurationProperties(prefix = DaDBConfig.DADBPREFIX)
-    public DataSource maindbDataSource() {
+    public DataSource dadbDataSource() {
         return DataSourceBuilder.create().build();
     }
 

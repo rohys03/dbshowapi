@@ -1,8 +1,9 @@
 package com.st11.dbshowapi.controller;
 
 
-import com.st11.dbshowapi.repository.DaSyncTablesVO;
-import com.st11.dbshowapi.repository.RefObjectVO;
+import com.st11.dbshowapi.repository.object.DaSyncTableVO;
+import com.st11.dbshowapi.repository.object.DaTableVO;
+import com.st11.dbshowapi.repository.object.RefObjectVO;
 import com.st11.dbshowapi.service.SystemInfoService;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,24 @@ public class SystemInfoRestController {
 
     @Autowired
     private SystemInfoService systemInfoService;
+
+
+    @GetMapping(value = {"daTable/{tableName}"})
+    public List<DaTableVO> daTable(
+            @PathVariable final String tableName) {
+
+        List<DaTableVO> daTablesVOList = null;
+        System.out.println("/api/daTable/tableName:" + tableName);
+
+        HashMap<String, Object> inParam = new HashMap<>();
+        inParam.put("tableName", tableName);
+
+        if (tableName != null) {
+            daTablesVOList = systemInfoService.getTableList(inParam);
+        }
+
+        return daTablesVOList;
+    }
 
     @GetMapping(value = {"referencedObject/{dbName}/{objectType}/{owner}/{objectName}"})
     public List<RefObjectVO> referencedObject(
@@ -43,10 +62,10 @@ public class SystemInfoRestController {
     }
 
     @GetMapping(value = {"daSyncData/{tableName}"})
-    public List<DaSyncTablesVO> daSyncData(
+    public List<DaSyncTableVO> daSyncData(
             @PathVariable final String tableName) {
 
-        List<DaSyncTablesVO> daSyncTablesVOList = null;
+        List<DaSyncTableVO> daSyncTablesVOList = null;
         System.out.println("/api/daSyncData/objectName:" + tableName);
 
         HashMap<String, Object> inParam = new HashMap<>();

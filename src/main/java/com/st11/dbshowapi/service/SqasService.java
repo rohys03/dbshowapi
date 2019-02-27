@@ -1,7 +1,7 @@
 package com.st11.dbshowapi.service;
 
-import com.st11.dbshowapi.repository.SqlAreaVO;
-import com.st11.dbshowapi.repository.TopSqlVO;
+import com.st11.dbshowapi.repository.sql.SqlAreaVO;
+import com.st11.dbshowapi.repository.sql.TopSqlVO;
 
 import java.util.HashMap;
 import java.util.List;
