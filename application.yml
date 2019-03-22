@@ -47,9 +47,13 @@ spring:
   datasource:
     dadb:
       driver-class-name: oracle.jdbc.driver.OracleDriver
-      jdbcUrl: ENC(UdKSqNMY+zgn6S1JtqtNCpYewWzZm5o9ZVQYVdkINidqvOFNSFWsyPQ4IUqD/XanUTiTX/CEo8c=)
-      username: ENC(yPbM1vLi+1nHuoyuZpeOsg==)
-      password: ENC(u0CttoN5TVx7k1LTWHtw9W68Nmqg4mpy)
+      jdbcUrl: jdbc:oracle:thin:@10.40.62.151:10101:TMALL
+#      DAUSER
+      username: ENC(AB+1kysOd1hxLbQpzwOshw==)
+      password: ENC(SRbor1pxBivq0n+Exes6tkJUKX0iS4LX)
+#      TMALL
+#      username: ENC(yPbM1vLi+1nHuoyuZpeOsg==)
+#      password: ENC(u0CttoN5TVx7k1LTWHtw9W68Nmqg4mpy)
       validation-query: select 1 from dual
 
 ---
@@ -59,7 +63,7 @@ spring:
   datasource:
     dadb:
       driver-class-name: oracle.jdbc.driver.OracleDriver
-      jdbcUrl: ENC(IZXxvwjYprSzwzGeSj5H6nU8IST02+U/5k9GmXSqWxn+cO5GKRb9fTYeccPSE/Rbs2pTsCqmXxg=)
+      jdbcUrl: jdbc:oracle:thin:@172.18.176.69:1525:TMALL
       username: ENC(Ln33hSqTbEALKgI2JXYTxA==)
       password: ENC(p+gZKHqWZblFUQRL24vQKmwcxHHs5ir8)
       validation-query: select 1 from dual

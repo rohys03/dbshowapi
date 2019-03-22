@@ -5,7 +5,6 @@
 <mapper namespace="com.st11.dbshowapi.repository.object.DaObjectMapper">
 
     <select id="getSyncTableList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.object.DaSyncTableVO">
-        <![CDATA[
         Select /* DaSyncTablesMapper.xml/getSyncTableList - ns: DaSyncTablesMapper by rohys03 */
             SRC_DB sourceDb
             , TABLE_OWNER tableOwner
@@ -14,13 +13,17 @@
             , S.HOSTNAME hostname
             , T.UPDATE_DT updateDt
         from DAUSER.DA_SYNC_TABLES t, DAUSER.DA_SERVER_INFO s
-        where TABLE_NM = #{tableName}
+        where 1=1
+
+        <if test="tableName != null">
+        and TABLE_NM = #{tableName}
+        </if>
+        <![CDATA[
         and t.TRGT_DB = s.SERVER_IP(+)
         ]]>
     </select>
 
     <select id="getTableList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.object.DaTableVO">
-        <![CDATA[
         SELECT /* daObjectMapper.xml/getTableList by rohys03 */
           /*+ LEADING(D T) */
           D.DB_NM dbName,
@@ -34,10 +37,32 @@
           T.STD_OBJ_YN standardObjectYn
         From DAUSER.DA_DB_LIST D, DAUSER.DA_TABLES T
         WHERE D.DB_ID = T.DB_ID
-        and T.TaBLE_NAME = #{tableName}
-        ]]>
+        <if test="tableName != null">
+            and T.TABLE_NAME = #{tableName}
+        </if>
+        <if test="logicalAreaCd1 != null">
+            and T.LOGIC_AREA_CD = #{logicalAreaCd1}
+        </if>
+        <if test="logicalAreaCd2 != null">
+            and T.LOGIC_AREA_CD2 = #{logicalAreaCd2}
+        </if>
     </select>
 
+    <select id="getAreaCdList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.object.AreaInfoVO">
+        <![CDATA[
+        SELECT
+          Logic_area_cd areaCd1,
+          Logic_area_cd2 areaCd2,
+          Count(*) allInstanceCnt,
+          sum(decode(db_id, 1, 1, 0)) db1Cnt,
+          sum(decode(db_id, 4, 1, 0)) db2Cnt,
+          sum(decode(db_id, 5, 1, 0)) db3Cnt,
+          sum(decode(db_id, 1, 0, 4, 0, 5, 0, 1)) otherInstanceCnt
+        From dauser.da_tables
+        Group by logic_area_cd, logic_area_cd2
+        Order by logic_area_cd, logic_area_cd2
+        ]]>
+    </select>
 
     <select id="getRefObjectList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.object.RefObjectVO">
         <![CDATA[

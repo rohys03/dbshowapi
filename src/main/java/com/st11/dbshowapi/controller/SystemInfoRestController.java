@@ -1,16 +1,14 @@
 package com.st11.dbshowapi.controller;
 
 
+import com.st11.dbshowapi.repository.object.AreaInfoVO;
 import com.st11.dbshowapi.repository.object.DaSyncTableVO;
 import com.st11.dbshowapi.repository.object.DaTableVO;
 import com.st11.dbshowapi.repository.object.RefObjectVO;
 import com.st11.dbshowapi.service.SystemInfoService;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,24 +20,6 @@ public class SystemInfoRestController {
 
     @Autowired
     private SystemInfoService systemInfoService;
-
-
-    @GetMapping(value = {"daTable/{tableName}"})
-    public List<DaTableVO> daTable(
-            @PathVariable final String tableName) {
-
-        List<DaTableVO> daTableVOList = null;
-        System.out.println("/api/daTable/tableName:" + tableName);
-
-        HashMap<String, Object> inParam = new HashMap<>();
-        inParam.put("tableName", tableName);
-
-        if (tableName != null) {
-            daTableVOList = systemInfoService.getTableList(inParam);
-        }
-
-        return daTableVOList;
-    }
 
     @GetMapping(value = {"referencedObject/{dbName}/{objectType}/{owner}/{objectName}"})
     public List<RefObjectVO> referencedObject(
@@ -61,6 +41,28 @@ public class SystemInfoRestController {
         return refObjects;
     }
 
+//    @GetMapping(value = {"referencedObject"})
+//    public List<RefObjectVO> referencedObject(
+//            @RequestParam(value = "dbName", required = false) final String dbName,
+//            @RequestParam(value = "objectType", required = false) final String objectType,
+//            @RequestParam(value = "owner") final String owner,
+//            @RequestParam(value = "objectName") final String objectName) {
+//
+//        List<RefObjectVO> refObjects = null;
+//
+//        HashMap<String, Object> inParam = new HashMap<>();
+//
+//        if (dbName != null) inParam.put("dbName", dbName);
+//        if (objectType != null) inParam.put("objectType", objectType);
+//        if (owner != null) inParam.put("owner", owner);
+//        if (objectName != null) inParam.put("objectName", objectName);
+//
+//        System.out.println("/api/referencedObject/dbName:"+ inParam.toString());
+//        refObjects = systemInfoService.getRefObjectList(inParam);
+//
+//        return refObjects;
+//    }
+
     @GetMapping(value = {"daSyncData/{tableName}"})
     public List<DaSyncTableVO> daSyncData(
             @PathVariable final String tableName) {
@@ -78,35 +80,39 @@ public class SystemInfoRestController {
         return daSyncTablesVOList;
     }
 
-    @GetMapping(value = {"getEncryptString/{string:.+}"})
-    public List<String> getEncryptString (@PathVariable final String string) {
-        System.out.println("/api/getEncryptString/string:"+ string);
+    @GetMapping(value = {"daTables"})
+    public List<DaTableVO> daTables(
+            @RequestParam(value = "tableName", required = false) final String tableName,
+            @RequestParam(value = "logicalAreaCd1", required = false) final String logicalAreaCd1,
+            @RequestParam(value = "logicalAreaCd2", required = false) final String logicalAreaCd2) {
 
-        StandardPBEStringEncryptor pbeEnc = new StandardPBEStringEncryptor();
-        pbeEnc.setAlgorithm("PBEWithMD5AndDES");
-        pbeEnc.setPassword("purple");
+        List<DaTableVO> daTableVOList = null;
 
-        String enc = pbeEnc.encrypt(string); //암호화 할 내용
-        System.out.println("enc = " + enc); //암호화 한 내용을 출력
+        HashMap<String, Object> inParam = new HashMap<>();
 
-        String des = pbeEnc.decrypt(enc);
-        System.out.println("des = " + des);
+        if (tableName != null) inParam.put("tableName", tableName);
+        if (logicalAreaCd1 != null) inParam.put("logicalAreaCd1", logicalAreaCd1);
+        if (logicalAreaCd2 != null) inParam.put("logicalAreaCd2", logicalAreaCd2);
 
-        List<String> returnOjbects = new ArrayList<>();
-        returnOjbects.add(enc);
+        System.out.println("/api/daTables/tableName:" + inParam.toString());
+        daTableVOList = systemInfoService.getTableList(inParam);
 
-        /*
-        String[] stringList = {""};
+        return daTableVOList;
+    }
 
-        for (String string2 : stringList) {
 
-            String enc2 = pbeEnc.encrypt(string2); //암호화 할 내용
-            System.out.println("enc["+string2+"] = " + enc2); //암호화 한 내용을 출력
+    @GetMapping(value = {"logicalArea"})
+    public List<AreaInfoVO> logicalArea(
+            @RequestParam(value = "logicAreaCd", required = false) final String logicAreaCd) {
 
-            String des2 = pbeEnc.decrypt(enc2);
-            System.out.println("des["+string2+"] = " + des2);
-        }
-        */
-        return returnOjbects;
+        List<AreaInfoVO> areaInfoVOList = null;
+
+        HashMap<String, Object> inParam = new HashMap<>();
+        if (logicAreaCd != null) inParam.put("logicAreaCd", logicAreaCd);
+
+        System.out.println("/api/logicalAreaTables/logicAreaCd:" + logicAreaCd);
+        areaInfoVOList = systemInfoService.getAreaCdList(inParam);
+
+        return areaInfoVOList;
     }
 }

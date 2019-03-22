@@ -11,19 +11,25 @@ import java.util.List;
 public class SystemInfoServiceImpl implements SystemInfoService {
 
     @Autowired
-    DaObjectMapper daTableMapper;
+    DaObjectMapper daObjectMapper;
 
     @Override
     public List<RefObjectVO> getRefObjectList(HashMap<String, Object> inparam) {
-        return daTableMapper.getRefObjectList(inparam);
+        return daObjectMapper.getRefObjectList(inparam);
     }
     @Override
     public List<DaSyncTableVO> getSyncTableList(HashMap<String, Object> inparam) {
-        return daTableMapper.getSyncTableList(inparam);
+        return daObjectMapper.getSyncTableList(inparam);
     }
 
     @Override
     public List<DaTableVO> getTableList(HashMap<String, Object> inparam) {
-        return daTableMapper.getTableList(inparam);
+        return daObjectMapper.getTableList(inparam);
     }
+
+    @Override
+    public List<AreaInfoVO> getAreaCdList(HashMap<String, Object> inparam) {
+        return daObjectMapper.getAreaCdList(inparam);
+    }
+
 }

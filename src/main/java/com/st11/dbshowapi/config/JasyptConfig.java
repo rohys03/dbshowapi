@@ -13,6 +13,7 @@ public class JasyptConfig {
     public StringEncryptor stringEncryptor() {
         PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
         SimpleStringPBEConfig config = new SimpleStringPBEConfig();
+
         config.setPassword("purple");
         config.setAlgorithm("PBEWithMD5AndDES");
         config.setKeyObtentionIterations("1000");
@@ -20,6 +21,7 @@ public class JasyptConfig {
         config.setProviderName("SunJCE");
         config.setSaltGeneratorClassName("org.jasypt.salt.RandomSaltGenerator");
         config.setStringOutputType("base64");
+
         encryptor.setConfig(config);
         return encryptor;
     }
