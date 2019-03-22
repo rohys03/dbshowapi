@@ -64,8 +64,8 @@ spring:
     dadb:
       driver-class-name: oracle.jdbc.driver.OracleDriver
       jdbcUrl: jdbc:oracle:thin:@172.18.176.69:1525:TMALL
-      username: ENC(Ln33hSqTbEALKgI2JXYTxA==)
-      password: ENC(p+gZKHqWZblFUQRL24vQKmwcxHHs5ir8)
+      username: ENC(NdRLjpiU0BLo2/XY9WCSvA==)
+      password: ENC(9W0JcIEsu5NMF9a8QNnm52AT88Bq4Te7)
       validation-query: select 1 from dual
 
 
