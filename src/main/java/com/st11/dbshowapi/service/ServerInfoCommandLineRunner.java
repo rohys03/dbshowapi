@@ -23,10 +23,10 @@ public class ServerInfoCommandLineRunner implements CommandLineRunner {
             System.out.println("== " + envKey.toUpperCase() + ": " + dbShowApiMapper.selectUserEnv("userenv", envKey));
         }
 
-        System.out.println("==== Encryption String ====");
-        getEncryptString();
-
-        getDecryptString();
+//        System.out.println("==== Encryption String ====");
+//
+//        getEncryptString();
+//        getDecryptString();
     }
 
     public void getEncryptString () {
@@ -35,7 +35,7 @@ public class ServerInfoCommandLineRunner implements CommandLineRunner {
         pbeEnc.setAlgorithm("PBEWithMD5AndDES");
         pbeEnc.setPassword("purple");
 
-        String[] stringList = {"dauser", "dauser#1004"};
+        String[] stringList = {"dauser", "dauser#1004", "dauser#ved1004"};
 
         for (String string2 : stringList) {
 
@@ -53,13 +53,12 @@ public class ServerInfoCommandLineRunner implements CommandLineRunner {
         pbeEnc.setAlgorithm("PBEWithMD5AndDES");
         pbeEnc.setPassword("purple");
 
-        String[] stringList = {"IZXxvwjYprSzwzGeSj5H6nU8IST02+U/5k9GmXSqWxn+cO5GKRb9fTYeccPSE/Rbs2pTsCqmXxg=", "UdKSqNMY+zgn6S1JtqtNCpYewWzZm5o9ZVQYVdkINidqvOFNSFWsyPQ4IUqD/XanUTiTX/CEo8c="};
+        String[] stringList = {"IZXxvwjYprSzwzGeSj5H6nU8IST02+U/5k9GmXSqWxn+cO5GKRb9fTYeccPSE/Rbs2pTsCqmXxg="};
 
         for (String string2 : stringList) {
 
             String des2 = pbeEnc.decrypt(string2);
             System.out.println("== decrypt["+string2+"] = " + des2);
         }
-
     }
 }

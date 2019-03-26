@@ -37,6 +37,9 @@
           T.STD_OBJ_YN standardObjectYn
         From DAUSER.DA_DB_LIST D, DAUSER.DA_TABLES T
         WHERE D.DB_ID = T.DB_ID
+        <if test="dbName != null">
+            and T.DB_NM = #{dbName}
+        </if>
         <if test="tableName != null">
             and T.TABLE_NAME = #{tableName}
         </if>
@@ -51,7 +54,7 @@
     <select id="getAreaCdList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.object.AreaInfoVO">
         <![CDATA[
         SELECT
-          Logic_area_cd areaCd1,
+          nvl(Logic_area_cd, 'Undefined') areaCd1,
           Logic_area_cd2 areaCd2,
           Count(*) allInstanceCnt,
           sum(decode(db_id, 1, 1, 0)) db1Cnt,

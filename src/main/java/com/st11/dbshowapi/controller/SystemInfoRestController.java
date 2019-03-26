@@ -94,7 +94,7 @@ public class SystemInfoRestController {
         if (logicalAreaCd1 != null) inParam.put("logicalAreaCd1", logicalAreaCd1);
         if (logicalAreaCd2 != null) inParam.put("logicalAreaCd2", logicalAreaCd2);
 
-        System.out.println("/api/daTables/tableName:" + inParam.toString());
+        System.out.println("/api/daTables/:" + inParam.toString());
         daTableVOList = systemInfoService.getTableList(inParam);
 
         return daTableVOList;
@@ -110,7 +110,7 @@ public class SystemInfoRestController {
         HashMap<String, Object> inParam = new HashMap<>();
         if (logicAreaCd != null) inParam.put("logicAreaCd", logicAreaCd);
 
-        System.out.println("/api/logicalAreaTables/logicAreaCd:" + logicAreaCd);
+        System.out.println("/api/logicalAreaTables/:" + logicAreaCd);
         areaInfoVOList = systemInfoService.getAreaCdList(inParam);
 
         return areaInfoVOList;

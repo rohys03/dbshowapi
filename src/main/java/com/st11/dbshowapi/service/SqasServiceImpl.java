@@ -34,4 +34,15 @@ public class SqasServiceImpl implements SqasService {
     public List<TopSqlVO> getTopSqlList(HashMap<String, Object> inParam) {
         return daSqlMapper.getTopSqlList(inParam);
     }
+
+
+    @Override
+    public List<SqlNameVO> getSqlName(HashMap<String, Object> inParam) {
+        return daSqlMapper.getSqlName(inParam);
+    }
+
+    @Override
+    public List<SqlNameStatsVO> getSqlNameStats(HashMap<String, Object> inParam) {
+        return daSqlMapper.getSqlNameStats(inParam);
+    }
 }

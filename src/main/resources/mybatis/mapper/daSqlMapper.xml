@@ -19,10 +19,9 @@
         <result property="sqlFullText" column="sqlFullText" jdbcType="CLOB" javaType="String" />
     </resultMap>
 
-
     <select id="getSqlAreaListAll" resultType="com.st11.dbshowapi.repository.sql.SqlAreaVO">
         <![CDATA[
-        Select /* sqlAreaMapper.xml/getSqlAreaListAll - ns: SqlAreaMapper by rohys03 */
+        Select /* daSqlMapper.xml/getSqlAreaListAll - ns: SqlAreaMapper by rohys03 */
           sql_id sqlId,
           sql_text sqlText,
           (SELECT name FROM audit_actions WHERE ACTION = s.command_type) commandType,
@@ -86,7 +85,7 @@
                      ) a
               where  sql_rn = 1
             )
-            select /* sqlAreaMapper.xml/getSqlareaList - ns: SqlAreaMapper by rohys03 */ /*+ ordered use_hash(b) no_swap_join_inputs(b) */
+            select /* daSqlMapper.xml/getSqlareaList - ns: SqlAreaMapper by rohys03 */ /*+ ordered use_hash(b) no_swap_join_inputs(b) */
                    b.inst_id instId,
                    b.sql_id sqlId,
                    b.plan_hash_value planHasshValue,
@@ -120,7 +119,7 @@
 
     <select id="getSqlAreaDetail" parameterType="hashmap" resultMap="sqlAreaVo">
         <![CDATA[
-            select /* sqlAreaMapper.xml/getSqlAreaDetail - ns: SqlAreaMapper by rohys03 */
+            select /* daSqlMapper.xml/getSqlAreaDetail - ns: SqlAreaMapper by rohys03 */
                 b.inst_id instId,
                 b.sql_id sqlId,
                 b.plan_hash_value planHashValue,
@@ -148,7 +147,7 @@
 
     <select id="getTopSqlList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.sql.TopSqlVO">
         <![CDATA[
-        SELECT /* topSqlMapper.xml/getTopSqlList - ns: TopSqlMapper by rohys03 */
+        SELECT /* daSqlMapper.xml/getTopSqlList - ns: daSqlMapper by rohys03 */
               Hist_dt histDt, node instId, SCHEMA schema, sql_id sqlId, Module module, serv service, first_load_dt firstLoadTime
             , bgets_rk bgetsRank, cpu_rk cpuRank, ela_rk elapRank, exec_rk execRank, dreads_rk diskReadRank
             , bgets_rto bgetsRatio, cpu_rto cpuRatio, ela_rto elapRatio, exec_rto execRatio, dreads_rto diskReadRatio
@@ -158,6 +157,88 @@
         WHERE hist_dt BETWEEN to_Date( #{date} , 'YYYYMMDD') AND to_Date( #{date} ,'YYYYMMDD') + 1
         AND node = #{instId}
         ORDER BY bgets_rk asc
+        ]]>
+    </select>
+    
+    <select id="getSqlName" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.sql.SqlNameVO">
+        Select /* daSqlMapper.xml/getSqlNameList - ns: by rohys03 */
+              /*+ ORDERED USE_NL(L S) INDEX(L PK_DA_SQLNAME_LIST)  */
+            L.SQL_NAME sqlName,
+            L.REP_SQL_ID repSqlId,
+            L.Parsing_schema_name parsingSchemaName,
+            l.Module module,
+            l.Last_active_time LastActiveTime,
+            S.CLCT_DY clctDy,
+            S.DB_ID dbId,
+            S.SQL_NAME_NO sqlNameNo,
+            S.CURR_TOTAL_EXEC currTotalExec,
+            S.PREV_TOTAL_EXEC prevTotalExec,
+            S.EXEC_DIFF execDiff,
+            S.CURR_TOTAL_BGET currTotalBget,
+            S.PREV_TOTAL_BGET prevTotalBget,
+            S.BGET_DIFF bgetDiff,
+            S.CURR_TOTAL_CPU currTotalCpu,
+            S.PREV_TOTAL_CPU prevTotalCpu,
+            S.CPU_DIFF cpuDiff,
+            S.CURR_TOTAL_ELA currTotalElap,
+            S.PREV_TOTAL_ELA prevTotalElap,
+            S.ELA_DIFF elapDiff,
+            S.CURR_CLCT_DY currClctDy,
+            S.PREV_CLCT_DY prevClctDy,
+            S.CREATE_DT createDt
+        From dauser.da_sqlname_list L, dauser.da_sqlname_stats s
+        where 1=1
+        and l.SQL_NAME_NO = s.SQL_NAME_NO
+        and l.db_id = s.db_id
+        and s.CLCT_DY = #{clctDy}
+        <if test="sqlName != null">
+            AND S.SQL_NAME_NO in (select sql_name_no from dauser.da_sqlname_list where sql_name like '%'||#{sqlName}||'%' )
+        </if>
+        and l.sql_name_no in (
+            select /*+ leading(T) use_nl(Info) index(INFO IX1_DA_SQLNAME_DTL_INFO) */
+                info.sql_name_no
+            From DAuser.DA_SQLNAME_DTL_INFO Info, dauser.da_tables t
+            where info.owner = t.owner
+            and info.object_name = t.table_name
+            and object_type = 'TABLE'
+            <if test="logicalAreaCd1 != null">
+                and T.LOGIC_AREA_CD = #{logicalAreaCd1}
+            </if>
+            <if test="logicalAreaCd2 != null">
+                and T.LOGIC_AREA_CD2 = #{logicalAreaCd2}
+            </if>
+        )
+        ORDER BY L.SQL_NAME, L.DB_ID, S.CLCT_DY desc
+    </select>
+    
+    <select id="getSqlNameStats" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.sql.SqlNameStatsVO">
+        SELECT /* daSqlMapper.xml/getSqlNameStats - ns: by rohys03 */
+            CLCT_DY clctDy
+            , DB_ID dbId
+            , SQL_NAME_NO sqlNameNo
+            , CURR_TOTAL_EXEC currTotalExec
+            , PREV_TOTAL_EXEC prevTotalExec
+            , EXEC_DIFF execDiff
+            , CURR_TOTAL_BGET currTotalBget
+            , PREV_TOTAL_BGET prevTotalBget
+            , BGET_DIFF bgetDiff
+            , CURR_TOTAL_CPU currTotalCpu
+            , PREV_TOTAL_CPU prevTotalCpu
+            , CPU_DIFF cpuDiff
+            , CURR_TOTAL_ELA currTotalElap
+            , PREV_TOTAL_ELA prevTotalElap
+            , ELA_DIFF elapDiff
+            , CURR_CLCT_DY currClctDy
+            , PREV_CLCT_DY prevClctDy
+            , CREATE_DT createDt
+        FROM DAUSER.DA_SQLNAME_STATS S
+        WHERE 1=1
+        <if test="clctDy != null">
+            and s.CLCT_DY = #{clctDy}
+        </if>
+        <![CDATA[
+        AND S.SQL_NAME_NO in (select sql_name_no from dauser.da_sqlname_list where sql_name like '%'||#{sqlName}||'%' )
+        Order by CLCT_DY desc
         ]]>
     </select>
 </mapper>
