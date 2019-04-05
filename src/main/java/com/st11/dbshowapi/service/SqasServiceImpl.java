@@ -1,6 +1,8 @@
 package com.st11.dbshowapi.service;
 
+import com.st11.dbshowapi.repository.dbshowapi.DbShowApiMapper;
 import com.st11.dbshowapi.repository.sql.*;
+import org.apache.ibatis.annotations.SelectKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,9 @@ public class SqasServiceImpl implements SqasService {
 
     @Autowired
     DaSqlMapper daSqlMapper;
+
+    @Autowired
+    DbShowApiMapper dbShowApiMapper;
 
     @Override
     public List<SqlAreaVO> getSqlAreaListAll() {
@@ -38,11 +43,14 @@ public class SqasServiceImpl implements SqasService {
 
     @Override
     public List<SqlNameVO> getSqlName(HashMap<String, Object> inParam) {
+        if (inParam.get("clctDy") == null) inParam.put("clctDy", dbShowApiMapper.getMaxClctDyByStatName("TMALL", "DA_DB_STAT"));
+
         return daSqlMapper.getSqlName(inParam);
     }
 
     @Override
     public List<SqlNameStatsVO> getSqlNameStats(HashMap<String, Object> inParam) {
+
         return daSqlMapper.getSqlNameStats(inParam);
     }
 }

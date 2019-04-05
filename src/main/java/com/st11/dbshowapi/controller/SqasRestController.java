@@ -110,7 +110,7 @@ public class SqasRestController {
 
     @GetMapping(value = {"sqlName"})
     public List<SqlNameVO> sqlName(
-            @RequestParam(value = "clctDy") final String clctDy,
+            @RequestParam(value = "clctDy", required = false) final String clctDy,
             @RequestParam(value = "sqlName", required = false) final String sqlName,
             @RequestParam(value = "logicalAreaCd1", required = false) final String logicalAreaCd1,
             @RequestParam(value = "logicalAreaCd2", required = false) final String logicalAreaCd2) {
