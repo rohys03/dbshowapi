@@ -93,10 +93,8 @@ public class SystemInfoRestController {
         if (tableName != null) inParam.put("tableName", tableName);
         if (hostName != null) inParam.put("hostName", hostName);
 
-        System.out.println("/api/daSyncData/tableName:" + tableName);
+        System.out.println("/api/daSyncData/tableName:" + inParam.toString());
         daSyncTablesVOList = systemInfoService.getSyncTableList(inParam);
-//        if (tableName != null) {
-//        }
 
         return daSyncTablesVOList;
     }
