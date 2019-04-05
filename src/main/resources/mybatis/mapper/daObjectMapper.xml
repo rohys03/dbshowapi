@@ -14,9 +14,11 @@
             , T.UPDATE_DT updateDt
         from DAUSER.DA_SYNC_TABLES t, DAUSER.DA_SERVER_INFO s
         where 1=1
-
         <if test="tableName != null">
-        and TABLE_NM = #{tableName}
+            and TABLE_NM = #{tableName}
+        </if>
+        <if test="hostName != null">
+            and UPPER(S.HOSTNAME) like '%'||#{hostName}||'%'
         </if>
         <![CDATA[
         and t.TRGT_DB = s.SERVER_IP(+)

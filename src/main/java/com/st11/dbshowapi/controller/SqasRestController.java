@@ -66,28 +66,26 @@ public class SqasRestController {
         return sqlAreaDetail;
     }
 
-    @RequestMapping(value = {"topSqlList/{dbName}/{instId}/{date}/{orderColumn}"})
+    @RequestMapping(value = {"topSqlList"})
     public List<TopSqlVO> topSqlList(
-            @PathVariable final String dbName, @PathVariable final String instId,
-            @PathVariable final String date, @PathVariable final String orderColumn) {
-        System.out.println("/api/topSqlList/dbName:"+ dbName + "/instId:" + instId + "/date:" + date + "/orderColumn:" + orderColumn);
+            @RequestParam(value = "dbName", required = false) final String dbName,
+            @RequestParam(value = "instId", required = false) final String instId,
+            @RequestParam(value = "clctDy") final String clctDy,
+            @RequestParam(value = "orderColumn") final String orderColumn) {
+        System.out.println("/api/topSqlList/dbName:"+ dbName + "/instId:" + instId + "/clctDy:" + clctDy + "/orderColumn:" + orderColumn);
 
         List<TopSqlVO> topsqlList = null;
 
         HashMap<String, Object> inParam = new HashMap<>();
-        inParam.put("dbName", dbName);
-        inParam.put("instId", instId);
-        inParam.put("date", date);
-        inParam.put("orderColumn", orderColumn);
+
+        if (dbName != null) inParam.put("dbName", dbName);
+        if (instId != null) inParam.put("instId", instId);
+        if (clctDy != null) inParam.put("clctDy", clctDy);
+        if (orderColumn != null) inParam.put("orderColumn", orderColumn);
 
         System.out.println("inparam1: " + inParam.toString());
-
-        if (dbName != null && instId != null) {
-            topsqlList = sqasService.getTopSqlList(inParam);
-            System.out.println("inparam2: " + inParam.toString() + " listSize: " + topsqlList.size());
-        } else {
-            return null;
-        }
+        topsqlList = sqasService.getTopSqlList(inParam);
+        System.out.println("inparam2: " + inParam.toString() + " listSize: " + topsqlList.size());
 
         return topsqlList;
     }
@@ -131,6 +129,5 @@ public class SqasRestController {
 
         return sqlNameVOList;
     }
-
 
 }

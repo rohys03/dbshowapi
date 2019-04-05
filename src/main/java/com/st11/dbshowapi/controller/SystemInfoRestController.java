@@ -63,19 +63,40 @@ public class SystemInfoRestController {
 //        return refObjects;
 //    }
 
-    @GetMapping(value = {"daSyncData/{tableName}"})
+//
+//    @GetMapping(value = {"daSyncData/{tableName}"})
+//    public List<DaSyncTableVO> daSyncData(
+//            @PathVariable final String tableName) {
+//
+//        List<DaSyncTableVO> daSyncTablesVOList = null;
+//        System.out.println("/api/daSyncData/tableName:" + tableName);
+//
+//        HashMap<String, Object> inParam = new HashMap<>();
+//        inParam.put("tableName", tableName);
+//
+//        if (tableName != null) {
+//            daSyncTablesVOList = systemInfoService.getSyncTableList(inParam);
+//        }
+//
+//        return daSyncTablesVOList;
+//    }
+    @GetMapping(value = {"daSyncData"})
     public List<DaSyncTableVO> daSyncData(
-            @PathVariable final String tableName) {
+            @RequestParam(value = "tableName", required = false) final String tableName,
+            @RequestParam(value = "hostName", required = false) final String hostName) {
 
         List<DaSyncTableVO> daSyncTablesVOList = null;
-        System.out.println("/api/daSyncData/tableName:" + tableName);
 
         HashMap<String, Object> inParam = new HashMap<>();
         inParam.put("tableName", tableName);
 
-        if (tableName != null) {
-            daSyncTablesVOList = systemInfoService.getSyncTableList(inParam);
-        }
+        if (tableName != null) inParam.put("tableName", tableName);
+        if (hostName != null) inParam.put("hostName", hostName);
+
+        System.out.println("/api/daSyncData/tableName:" + tableName);
+        daSyncTablesVOList = systemInfoService.getSyncTableList(inParam);
+//        if (tableName != null) {
+//        }
 
         return daSyncTablesVOList;
     }
