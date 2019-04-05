@@ -124,7 +124,7 @@ public class SqasRestController {
         if (logicalAreaCd1 != null) inParam.put("logicalAreaCd1", logicalAreaCd1);
         if (logicalAreaCd2 != null) inParam.put("logicalAreaCd2", logicalAreaCd2);
 
-        System.out.println("/api/daTables/:" + inParam.toString());
+        System.out.println("/api/sqlName/:" + inParam.toString());
         sqlNameVOList = sqasService.getSqlName(inParam);
 
         return sqlNameVOList;
