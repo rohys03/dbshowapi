@@ -43,7 +43,7 @@ public class SqasServiceImpl implements SqasService {
 
     @Override
     public List<SqlNameVO> getSqlName(HashMap<String, Object> inParam) {
-        if (!inParam.containsKey("clctDy")) inParam.put("clctDy", dbShowApiMapper.getMaxClctDyByStatName("TMALL", "DA_DB_STAT"));
+        if (!inParam.containsKey("clctDy")) inParam.put("clctDy", dbShowApiMapper.getMaxClctDyByStatName("TMALL", "DA_DB_STATS"));
         System.out.println("[getSqlName]" + inParam.toString());
 
         return daSqlMapper.getSqlName(inParam);
