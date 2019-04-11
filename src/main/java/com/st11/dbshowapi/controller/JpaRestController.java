@@ -1,11 +1,9 @@
 package com.st11.dbshowapi.controller;
 
-import com.st11.dbshowapi.jpa.MtCupnRepository;
-import com.st11.dbshowapi.jpa.MtCupnVo;
+import com.st11.dbshowapi.jpa.DaStatMngRepository;
+import com.st11.dbshowapi.jpa.DaStatMngVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,13 +12,13 @@ import java.util.List;
 public class JpaRestController {
 
     @Autowired
-    MtCupnRepository mtCupnRepository;
+    DaStatMngRepository daStatMngRepository;
 
-    @GetMapping("/mtCupnList")
-    public List<MtCupnVo> getMtCupnList() {
+    @GetMapping("/daStatMngLastUpdateDt")
+    public List<DaStatMngVO> getDaStatMngLastUpdateDt(
+            @RequestParam(value = "dbName", required = false) final String dbName,
+            @RequestParam(value = "statName", required = false) final String statName) {
 
-        List<MtCupnVo> mtCupnVoList = mtCupnRepository.findAll();
-        return mtCupnVoList;
+        return daStatMngRepository.findFirstByDbNmAndStatNmOrderByClctDyDesc(dbName, statName);
     }
-
 }

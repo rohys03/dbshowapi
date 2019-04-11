@@ -1,10 +1,6 @@
 package com.st11.dbshowapi.controller;
 
-import com.st11.dbshowapi.repository.object.DaTableVO;
-import com.st11.dbshowapi.repository.sql.SqlAreaVO;
-import com.st11.dbshowapi.repository.sql.SqlNameStatsVO;
-import com.st11.dbshowapi.repository.sql.SqlNameVO;
-import com.st11.dbshowapi.repository.sql.TopSqlVO;
+import com.st11.dbshowapi.repository.sql.*;
 import com.st11.dbshowapi.service.SqasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -90,26 +86,32 @@ public class SqasRestController {
         return topsqlList;
     }
 
-    @GetMapping(value = {"sqlNameStats"})
-    public List<SqlNameStatsVO> sqlNameStats(
-            @RequestParam(value = "clctDy", required = false) final String clctDy,
-            @RequestParam(value = "sqlName") final String sqlName) {
+    @GetMapping(value = {"sqlNameStatsHist"})
+    public List<SqlNameStatsVO> sqlNameStatsHist(
+            @RequestParam(value = "clctDy") final String clctDy,
+            @RequestParam(value = "dbId", required = false) final String dbId,
+            @RequestParam(value = "sqlName", required = false) final String sqlName,
+            @RequestParam(value = "sqlNameNo", required = false) final String sqlNameNo) {
 
         List<SqlNameStatsVO> sqlNameStatsVOList = null;
 
         HashMap<String, Object> inParam = new HashMap<>();
 
         if (clctDy != null) inParam.put("clctDy", clctDy);
+        if (dbId != null) inParam.put("dbId", dbId);
         if (sqlName != null) inParam.put("sqlName", sqlName);
+        if (sqlNameNo != null) inParam.put("sqlNameNo", sqlNameNo);
 
-        System.out.println("/api/sqlNameStats/:" + inParam.toString());
-        sqlNameStatsVOList = sqasService.getSqlNameStats(inParam);
+        System.out.println("/api/sqlNameStatsHist/:" + inParam.toString());
+        if (!inParam.isEmpty()) {
+            sqlNameStatsVOList = sqasService.getSqlNameStatsHist(inParam);
+        }
 
         return sqlNameStatsVOList;
     }
 
-    @GetMapping(value = {"sqlName"})
-    public List<SqlNameVO> sqlName(
+    @GetMapping(value = {"sqlNameList"})
+    public List<SqlNameVO> sqlNameList(
             @RequestParam(value = "clctDy", required = false) final String clctDy,
             @RequestParam(value = "sqlName", required = false) final String sqlName,
             @RequestParam(value = "logicalAreaCd1", required = false) final String logicalAreaCd1,
@@ -124,10 +126,58 @@ public class SqasRestController {
         if (logicalAreaCd1 != null) inParam.put("logicalAreaCd1", logicalAreaCd1);
         if (logicalAreaCd2 != null) inParam.put("logicalAreaCd2", logicalAreaCd2);
 
-        System.out.println("/api/sqlName/:" + inParam.toString());
-        sqlNameVOList = sqasService.getSqlName(inParam);
+        System.out.println("/api/sqlNameList/:" + inParam.toString());
+        sqlNameVOList = sqasService.getSqlNameList(inParam);
 
         return sqlNameVOList;
     }
 
+    @GetMapping(value = {"sqlName"})
+    public List<SqlNameVO> sqlName(
+            @RequestParam(value = "dbId", required = false) final int dbId,
+            @RequestParam(value = "sqlNameNo", required = false) final long sqlNameNo,
+            @RequestParam(value = "sqlName", required = false) final String sqlName) {
+
+        List<SqlNameVO> sqlNameVOList = null;
+
+        HashMap<String, Object> inParam = new HashMap<>();
+
+        if (dbId > 0) inParam.put("dbId", dbId);
+        if (sqlNameNo > 0) inParam.put("sqlNameNo", sqlNameNo);
+        if (sqlName != null) inParam.put("sqlName", sqlName);
+
+        System.out.println("/api/sqlName/:" + inParam.toString());
+        if (!inParam.isEmpty()) {
+            sqlNameVOList = sqasService.getSqlName(inParam);
+        }
+
+        return sqlNameVOList;
+    }
+
+    @GetMapping(value = {"sqlNameMappSummary"})
+    public List<SqlNameMappVO> sqlNameMappSummary(
+            @RequestParam(value = "clctDy", required = false) final String clctDy,
+            @RequestParam(value = "dbId", required = false) final int dbId,
+            @RequestParam(value = "sqlName", required = false) final String sqlName,
+            @RequestParam(value = "sqlNameNo", required = false) final String sqlNameNo) {
+
+        List<SqlNameMappVO> SqlNameMappVOList = null;
+
+        HashMap<String, Object> inParam = new HashMap<>();
+
+        if (!clctDy.isEmpty()) {
+            inParam.put("clctDy", clctDy);
+            inParam.put("partCd", clctDy.substring(6,8));
+        }
+        if (dbId > 0) inParam.put("dbId", dbId);
+        if (sqlName != null) inParam.put("sqlName", sqlName);
+        if (sqlNameNo != null) inParam.put("sqlNameNo", sqlNameNo);
+
+        System.out.println("/api/sqlName/:" + inParam.toString());
+        if (!inParam.isEmpty()) {
+            SqlNameMappVOList = sqasService.getSqlNameMappSummary(inParam);
+        }
+
+        return SqlNameMappVOList;
+    }
 }

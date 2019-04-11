@@ -1,8 +1,6 @@
 package com.st11.dbshowapi.service;
 
-import com.st11.dbshowapi.repository.dbshowapi.DbShowApiMapper;
 import com.st11.dbshowapi.repository.sql.*;
-import org.apache.ibatis.annotations.SelectKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +13,9 @@ public class SqasServiceImpl implements SqasService {
     @Autowired
     DaSqlMapper daSqlMapper;
 
+
     @Autowired
-    DbShowApiMapper dbShowApiMapper;
+    DbShowApiService dbShowApiService;
 
     @Override
     public List<SqlAreaVO> getSqlAreaListAll() {
@@ -42,10 +41,14 @@ public class SqasServiceImpl implements SqasService {
 
 
     @Override
-    public List<SqlNameVO> getSqlName(HashMap<String, Object> inParam) {
-        if (!inParam.containsKey("clctDy")) inParam.put("clctDy", dbShowApiMapper.getMaxClctDyByStatName("TMALL", "DA_DB_STATS"));
-        System.out.println("[getSqlName]" + inParam.toString());
+    public List<SqlNameVO> getSqlNameList(HashMap<String, Object> inParam) {
+//        System.out.println("[getSqlName1]" + inParam.toString());
+        if (!inParam.containsKey("clctDy")) inParam.put("clctDy", dbShowApiService.getLastDaStatMng("TMALL", "DA_DB_STATS").get(0).getClctDy());
 
+        return daSqlMapper.getSqlNameList(inParam);
+    }
+    @Override
+    public List<SqlNameVO> getSqlName(HashMap<String, Object> inParam) {
         return daSqlMapper.getSqlName(inParam);
     }
 
@@ -54,4 +57,22 @@ public class SqasServiceImpl implements SqasService {
 
         return daSqlMapper.getSqlNameStats(inParam);
     }
+    @Override
+    public List<SqlNameStatsVO> getSqlNameStatsHist(HashMap<String, Object> inParam) {
+
+        return daSqlMapper.getSqlNameStatsHist(inParam);
+    }
+
+
+    @Override
+    public List<SqlNameMappVO> getSqlNameMapp(HashMap<String, Object> inParam){
+        return daSqlMapper.getSqlNameMapp(inParam);
+    }
+
+    @Override
+    public List<SqlNameMappVO> getSqlNameMappSummary(HashMap<String, Object> inParam){
+        if (!inParam.containsKey("clctDy")) inParam.put("clctDy", dbShowApiService.getLastDaStatMng("PMETA", "DA_SQLNAME_MAPP").get(0).getClctDy());
+        return daSqlMapper.getSqlNameMappSummary(inParam);
+    }
+
 }

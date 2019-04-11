@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
 
 @Repository
 @Mapper
@@ -14,6 +16,7 @@ public interface DbShowApiMapper {
     @Select("select sys_context(#{userenv}, #{envKey}) from dual")
     String selectUserEnv(String userenv, String envKey);
 
-    @Select("Select Max(clct_dy) From dauser.da_stat_mng where stat_nm = #{statName} and DB_NM = #{dbName}")
-    String getMaxClctDyByStatName(String dbName, String statName);
+    List<DaStatMngVO> getLastDaStatMng(HashMap<String, Object> inParam);
+
+    List<DaStatMngVO> getDaStatMngList(HashMap<String, Object> inParam);
 }

@@ -159,9 +159,9 @@
         ORDER BY bgets_rk asc
         ]]>
     </select>
-    
-    <select id="getSqlName" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.sql.SqlNameVO">
-        Select /* daSqlMapper.xml/getSqlNameList - ns: by rohys03 */
+
+    <select id="getSqlNameList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.sql.SqlNameVO">
+        Select /* daSqlMapper.xml/getSqlName - ns: by rohys03 */
               /*+ ORDERED USE_NL(L S) INDEX(L PK_DA_SQLNAME_LIST)  */
             L.SQL_NAME sqlName,
             L.REP_SQL_ID repSqlId,
@@ -211,7 +211,7 @@
         ORDER BY L.SQL_NAME, L.DB_ID, S.CLCT_DY desc
     </select>
     
-    <select id="getSqlNameStats" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.sql.SqlNameStatsVO">
+    <select id="getSqlNameStatsHist" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.sql.SqlNameStatsVO">
         SELECT /* daSqlMapper.xml/getSqlNameStats - ns: by rohys03 */
             CLCT_DY clctDy
             , DB_ID dbId
@@ -234,11 +234,109 @@
         FROM DAUSER.DA_SQLNAME_STATS S
         WHERE 1=1
         <if test="clctDy != null">
-            and s.CLCT_DY = #{clctDy}
-        </if>
-        <![CDATA[
-        AND S.SQL_NAME_NO in (select sql_name_no from dauser.da_sqlname_list where sql_name like '%'||#{sqlName}||'%' )
-        Order by CLCT_DY desc
+            <![CDATA[
+        and s.CLCT_DY >= #{clctDy}
         ]]>
+        </if>
+        <if test="dbId != null">
+            AND S.DB_ID = #{dbId}
+        </if>
+        <if test="sqlName != null">
+            <![CDATA[
+        AND S.SQL_NAME_NO in (select sql_name_no from dauser.da_sqlname_list where sql_name like '%'||#{sqlName}||'%' )
+        ]]>
+        </if>
+        <if test="sqlNameNo != null">
+        AND S.SQL_NAME_NO = #{sqlNameNo}
+        </if>
+        Order by CLCT_DY desc
+    </select>
+
+    <select id="getSqlName" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.sql.SqlNameVO">
+        SELECT /* daSqlMapper.xml/getSqlName - ns: by rohys03 */
+            DB_ID dbId
+            , SQL_NAME_NO sqlNameNo
+            , SQL_NAME sqlName
+            , rep_sql_id repSqlId
+            , parsing_Schema_name parsingSchemaName
+            , module module
+            , last_active_time lastActiveTime
+            , create_dt createDt
+            , update_dt updateDt
+        FROM DAUSER.DA_SQLNAME_LIST S
+        WHERE 1=1
+        <if test="dbId != null">
+            AND S.DB_ID = #{dbId}
+        </if>
+        <if test="sqlName != null">
+            <![CDATA[
+        AND S.sql_name like '%'||#{sqlName}||'%' )
+        ]]>
+        </if>
+        <if test="sqlNameNo != null">
+            AND S.SQL_NAME_NO = #{sqlNameNo}
+        </if>
+    </select>
+
+    <select id="getSqlNameMappSummary" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.sql.SqlNameMappVO">
+        SELECT /* daSqlMapper.xml/getSqlNameMappSummary - ns: by rohys03 */
+          /*+ leading(A) */
+          a.sql_name sqlName
+        , a.rep_sql_id repSqlId
+        , max(sql_text) sqlText
+        , sum(executions) executions
+        , sum(buffer_gets) bufferGets
+        , sum(elapsed_time) elapsedTime
+        , sum(disk_reads) diskReads
+        , sum(cpu_time) cpuTime
+        , max(m.last_active_time) lastActiveTime
+        FROM DAUSER.DA_SQLNAME_MAPP M, DAUSER.DA_SQLNAME_LIST A
+        WHERE 1=1
+        AND M.clct_Dy = #{clctDy}
+        and M.part_cd = #{partCd}
+        and a.sql_name = M.sql_name
+        and a.db_id = M.db_id
+        <if test="sqlNameNo != null">
+        and a.sql_name_no = #{sqlNameNo}
+        </if>
+        <if test="sqlName != null">
+            AND a.sql_name = #{sqlName}
+        </if>
+        <if test="dbId != null">
+            AND M.DB_ID = #{dbId}
+        </if>
+        Group by a.sql_name, a.rep_sql_id
+    </select>
+
+    <select id="getSqlNameMapp" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.sql.SqlNameMappVO">
+        SELECT /* daSqlMapper.xml/getSqlNameMapp - ns: by rohys03 */
+        clct_dy
+        , part_cd partCd
+        , db_id dbId
+        , sql_name sqlName
+        , sql_id sqlId
+        , rnk rnk
+        , inst_id instId
+        , sql_text sqlText
+        , module module
+        , last_active_time lastActiveTime
+        , executions executions
+        , buffer_gets bufferGets
+        , elapsed_time elapsedTime
+        , disk_reads diskReads
+        , Command_Type commandType
+        , parsing_Schema_name parsingSchemaName
+        , cpu_time cpuTime
+        FROM DAUSER.DA_SQLNAME_MAPP M
+        WHERE 1=1
+        and part_cd = #{partCd}
+        and sql_name = #{sqlName}
+        <if test="clctDy != null">
+            AND clct_Dy = #{clctDy}
+        </if>
+        <if test="dbId != null">
+            AND S.DB_ID = #{dbId}
+        </if>
+        order by clct_dy desc
     </select>
 </mapper>

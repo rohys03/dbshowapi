@@ -6,11 +6,9 @@ import com.st11.dbshowapi.repository.object.DaSyncTableVO;
 import com.st11.dbshowapi.repository.object.DaTableVO;
 import com.st11.dbshowapi.repository.object.RefObjectVO;
 import com.st11.dbshowapi.service.SystemInfoService;
-import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -63,23 +61,7 @@ public class SystemInfoRestController {
 //        return refObjects;
 //    }
 
-//
-//    @GetMapping(value = {"daSyncData/{tableName}"})
-//    public List<DaSyncTableVO> daSyncData(
-//            @PathVariable final String tableName) {
-//
-//        List<DaSyncTableVO> daSyncTablesVOList = null;
-//        System.out.println("/api/daSyncData/tableName:" + tableName);
-//
-//        HashMap<String, Object> inParam = new HashMap<>();
-//        inParam.put("tableName", tableName);
-//
-//        if (tableName != null) {
-//            daSyncTablesVOList = systemInfoService.getSyncTableList(inParam);
-//        }
-//
-//        return daSyncTablesVOList;
-//    }
+
     @GetMapping(value = {"daSyncData"})
     public List<DaSyncTableVO> daSyncData(
             @RequestParam(value = "tableName", required = false) final String tableName,

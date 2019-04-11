@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.st11.dbshowapi.repository.dbshowapi.DbShowApiMapper">
+
+    <select id="getDaStatMngList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.dbshowapi.DaStatMngVO">
+      Select
+        DB_NM dbNm,
+        STAT_NM statNm,
+        clct_Dy clctDy,
+        CLCT_RSLT_CD clctRsltCd,
+        part_Cd partCd,
+        create_dt createDt,
+        update_dt updateDt
+      From dauser.da_stat_mng
+      where stat_nm = #{statName} and DB_NM = #{dbName}
+        <if test="clctDy != null">
+            <![CDATA[
+          and clct_dy >= #{dbName}
+          ]]>
+        </if>
+      order by clct_dy desc
+    </select>
+
+    <select id="getLastDaStatMng" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.dbshowapi.DaStatMngVO">
+      SELECT
+        *
+      FROM (
+          Select
+            DB_NM dbNm,
+            STAT_NM statNm,
+            clct_Dy clctDy,
+            CLCT_RSLT_CD clctRsltCd,
+            part_Cd partCd,
+            create_dt createDt,
+            update_dt updateDt
+          From dauser.da_stat_mng
+          where stat_nm = #{statName} and DB_NM = #{dbName}
+        <if test="clctDy != null">
+          <![CDATA[
+          and clct_dy >= #{clct_dy}
+          ]]>
+        </if>
+          order by clct_dy desc
+      )
+      WHERE ROWNUM = 1
+    </select>
+
+</mapper>

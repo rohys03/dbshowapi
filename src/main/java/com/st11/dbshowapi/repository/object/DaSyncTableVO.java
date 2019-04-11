@@ -2,7 +2,7 @@ package com.st11.dbshowapi.repository.object;
 
 import lombok.Data;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 @Data
 public class DaSyncTableVO {
@@ -11,5 +11,5 @@ public class DaSyncTableVO {
     private String tableName;
     private String targetDb;
     private String hostname;
-    private Date updateDt;
+    private Timestamp updateDt;
 }
