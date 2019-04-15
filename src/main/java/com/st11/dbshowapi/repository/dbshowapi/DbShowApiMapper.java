@@ -17,6 +17,8 @@ public interface DbShowApiMapper {
     String selectUserEnv(String userenv, String envKey);
 
     List<DaStatMngVO> getLastDaStatMng(HashMap<String, Object> inParam);
+    DaStatMngVO getLastDaStatMng2(HashMap<String, Object> inParam);
 
     List<DaStatMngVO> getDaStatMngList(HashMap<String, Object> inParam);
 }
+

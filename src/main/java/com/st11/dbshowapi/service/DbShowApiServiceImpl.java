@@ -29,4 +29,13 @@ public class DbShowApiServiceImpl implements DbShowApiService {
         inParam.put("statName", statName);
         return dbShowApiMapper.getLastDaStatMng(inParam);
     }
+
+
+    @Override
+    public DaStatMngVO getLastDaStatMng2(String dbName, String statName) {
+        HashMap<String, Object> inParam = new HashMap<>();
+        inParam.put("dbName", dbName);
+        inParam.put("statName", statName);
+        return dbShowApiMapper.getLastDaStatMng2(inParam);
+    }
 }

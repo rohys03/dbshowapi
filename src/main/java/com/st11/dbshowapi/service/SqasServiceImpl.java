@@ -71,7 +71,11 @@ public class SqasServiceImpl implements SqasService {
 
     @Override
     public List<SqlNameMappVO> getSqlNameMappSummary(HashMap<String, Object> inParam){
-        if (!inParam.containsKey("clctDy")) inParam.put("clctDy", dbShowApiService.getLastDaStatMng("PMETA", "DA_SQLNAME_MAPP").get(0).getClctDy());
+        if (!inParam.containsKey("clctDy")) {
+            String clctDy = dbShowApiService.getLastDaStatMng("PMETA", "DA_SQLNAME_MAPP").get(0).getClctDy();
+            inParam.put("clctDy", clctDy);
+            inParam.put("partCd", clctDy.substring(6,8));
+        }
         return daSqlMapper.getSqlNameMappSummary(inParam);
     }
 

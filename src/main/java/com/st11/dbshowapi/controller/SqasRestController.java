@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.st11.dbshowapi.common.Dbshow.isNullOrEmpty;
+
 @RestController
 @RequestMapping("api")
 public class SqasRestController {
@@ -165,7 +167,7 @@ public class SqasRestController {
 
         HashMap<String, Object> inParam = new HashMap<>();
 
-        if (!clctDy.isEmpty()) {
+        if (!isNullOrEmpty(clctDy)) {
             inParam.put("clctDy", clctDy);
             inParam.put("partCd", clctDy.substring(6,8));
         }
@@ -173,7 +175,7 @@ public class SqasRestController {
         if (sqlName != null) inParam.put("sqlName", sqlName);
         if (sqlNameNo != null) inParam.put("sqlNameNo", sqlNameNo);
 
-        System.out.println("/api/sqlName/:" + inParam.toString());
+        System.out.println("/api/sqlNameMappSummary/:" + inParam.toString());
         if (!inParam.isEmpty()) {
             SqlNameMappVOList = sqasService.getSqlNameMappSummary(inParam);
         }

@@ -47,4 +47,24 @@ public class DbShowRestController {
 
     }
 
+
+    @GetMapping(value = {"getLastDaStatMng2"})
+    public DaStatMngVO getLastDaStatMng2(
+            @RequestParam(value = "dbName", required = false) final String dbName,
+            @RequestParam(value = "statName", required = false) final String statName) {
+
+        HashMap<String, Object> inParam = new HashMap<>();
+
+        if (dbName != null) inParam.put("dbName", dbName);
+        if (statName != null) inParam.put("statName", statName);
+
+        System.out.println("[getLastDaStatMng()]inParam: " + inParam);
+//        return dbShowApiService.getLastDaStatMng(inParam);
+        return dbShowApiService.getLastDaStatMng2(dbName, statName);
+
+    }
+
+
+
+
 }

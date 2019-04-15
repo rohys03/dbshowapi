@@ -24,27 +24,51 @@
     </select>
 
     <select id="getLastDaStatMng" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.dbshowapi.DaStatMngVO">
-      SELECT
+        SELECT
         *
-      FROM (
-          Select
-            DB_NM dbNm,
-            STAT_NM statNm,
-            clct_Dy clctDy,
-            CLCT_RSLT_CD clctRsltCd,
-            part_Cd partCd,
-            create_dt createDt,
-            update_dt updateDt
-          From dauser.da_stat_mng
-          where stat_nm = #{statName} and DB_NM = #{dbName}
+        FROM (
+        Select
+        DB_NM dbNm,
+        STAT_NM statNm,
+        clct_Dy clctDy,
+        CLCT_RSLT_CD clctRsltCd,
+        part_Cd partCd,
+        create_dt createDt,
+        update_dt updateDt
+        From dauser.da_stat_mng
+        where stat_nm = #{statName} and DB_NM = #{dbName}
         <if test="clctDy != null">
-          <![CDATA[
+            <![CDATA[
           and clct_dy >= #{clct_dy}
           ]]>
         </if>
-          order by clct_dy desc
-      )
-      WHERE ROWNUM = 1
+        order by clct_dy desc
+        )
+        WHERE ROWNUM = 1
+    </select>
+
+    <select id="getLastDaStatMng2" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.dbshowapi.DaStatMngVO">
+        SELECT
+        *
+        FROM (
+        Select
+        DB_NM dbNm,
+        STAT_NM statNm,
+        clct_Dy clctDy,
+        CLCT_RSLT_CD clctRsltCd,
+        part_Cd partCd,
+        create_dt createDt,
+        update_dt updateDt
+        From dauser.da_stat_mng
+        where stat_nm = #{statName} and DB_NM = #{dbName}
+        <if test="clctDy != null">
+            <![CDATA[
+          and clct_dy >= #{clct_dy}
+          ]]>
+        </if>
+        order by clct_dy desc
+        )
+        WHERE ROWNUM = 1
     </select>
 
 </mapper>
