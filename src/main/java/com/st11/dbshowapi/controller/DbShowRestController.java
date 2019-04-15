@@ -58,13 +58,10 @@ public class DbShowRestController {
         if (dbName != null) inParam.put("dbName", dbName);
         if (statName != null) inParam.put("statName", statName);
 
-        System.out.println("[getLastDaStatMng()]inParam: " + inParam);
+        System.out.println("[getLastDaStatMng2()]inParam: " + inParam);
 //        return dbShowApiService.getLastDaStatMng(inParam);
         return dbShowApiService.getLastDaStatMng2(dbName, statName);
 
     }
-
-
-
 
 }
