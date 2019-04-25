@@ -6,7 +6,7 @@ import com.st11.dbshowapi.repository.system.DbKpiStatVO;
 import java.util.List;
 
 public interface SystemService {
-    List<DbKpiStatVO> getDbKpiStatsWeekly(int page);
-    List<DbKpiStatVO> getDbKpiStatsDaily(int page);
+    List<DbKpiStatVO> getDbKpiStatsWeekly(String page);
+    List<DbKpiStatVO> getDbKpiStatsDaily(String page);
 
 }

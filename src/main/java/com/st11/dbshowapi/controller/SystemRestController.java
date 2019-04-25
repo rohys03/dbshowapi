@@ -20,14 +20,14 @@ public class SystemRestController {
 
     @GetMapping(value = {"dbKpiStatWeekly"})
     public List<DbKpiStatVO> dbKpiStatWeekly(
-            @RequestParam(value = "cnt", required = false) final int cnt) {
+            @RequestParam(value = "cnt", required = false) final String cnt) {
         return systemService.getDbKpiStatsWeekly(cnt);
     }
 
 
     @GetMapping(value = {"dbKpiStatDaily"})
     public List<DbKpiStatVO> dbKpiStatDaily(
-            @RequestParam(value = "cnt", required = false) final int cnt) {
+            @RequestParam(value = "cnt", required = false) final String cnt) {
         return systemService.getDbKpiStatsDaily(cnt);
     }
 

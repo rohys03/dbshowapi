@@ -14,13 +14,13 @@ public class SystemServiceImpl implements SystemService {
     DbKpiStatMapper dbKpiStatMapper;
 
     @Override
-    public List<DbKpiStatVO> getDbKpiStatsWeekly(int page) {
-        return dbKpiStatMapper.getDbKpiStatsWeekly(page);
+    public List<DbKpiStatVO> getDbKpiStatsWeekly(String page) {
+        return dbKpiStatMapper.getDbKpiStatsWeekly(Integer.parseInt(page));
     }
 
     @Override
-    public List<DbKpiStatVO> getDbKpiStatsDaily(int page) {
-        return dbKpiStatMapper.getDbKpiStatsDaily(page);
+    public List<DbKpiStatVO> getDbKpiStatsDaily(String page) {
+        return dbKpiStatMapper.getDbKpiStatsDaily(Integer.parseInt(page));
     }
 
 }
