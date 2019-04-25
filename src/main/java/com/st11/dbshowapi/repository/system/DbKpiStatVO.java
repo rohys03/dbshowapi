@@ -13,6 +13,7 @@ public class DbKpiStatVO {
 
     private String clctMon;
     private String clctWk;
+    private String clctMonthWeek;
     private String clctDy;
     private String bgnClctDy;
     private String endClctDy;

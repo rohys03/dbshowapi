@@ -27,6 +27,7 @@ public interface DbKpiStatMapper {
     @Results(value = {
             @Result(property="clctMon", column="clct_mon"),
             @Result(property="clctWk", column="clct_Wk"),
+            @Result(property="clctMonthWeek", column="clct_MonWk"),
             @Result(property="bgnClctDy", column="bgn_Clct_Dy"),
             @Result(property="endClctDy", column="end_Clct_Dy"),
 
