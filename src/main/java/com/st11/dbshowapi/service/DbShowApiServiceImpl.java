@@ -18,10 +18,7 @@ public class DbShowApiServiceImpl implements DbShowApiService {
     public List<DaStatMngVO> getDaStatMngList (HashMap<String, Object> inParam) {
         return dbShowApiMapper.getDaStatMngList(inParam);
     }
-    @Override
-    public List<DaStatMngVO> getLastDaStatMng(HashMap<String, Object> inParam) {
-        return dbShowApiMapper.getLastDaStatMng(inParam);
-    }
+
     @Override
     public List<DaStatMngVO> getLastDaStatMng(String dbName, String statName) {
         HashMap<String, Object> inParam = new HashMap<>();
@@ -38,4 +35,5 @@ public class DbShowApiServiceImpl implements DbShowApiService {
         inParam.put("statName", statName);
         return dbShowApiMapper.getLastDaStatMng2(inParam);
     }
+
 }
