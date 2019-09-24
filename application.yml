@@ -47,7 +47,7 @@ spring:
   datasource:
     dadb:
       driver-class-name: oracle.jdbc.driver.OracleDriver
-      jdbcUrl: jdbc:oracle:thin:@10.40.62.151:10101:TMALL
+      jdbcUrl: jdbc:oracle:thin:@10.40.62.150:10101:TMALL
 #      DAUSER
       username: ENC(AB+1kysOd1hxLbQpzwOshw==)
       password: ENC(SRbor1pxBivq0n+Exes6tkJUKX0iS4LX)
