@@ -1,7 +1,7 @@
 .gradle
 !gradle/wrapper/gradle-wrapper.jar
 build/
-!build/libs/*.jar
+!build/libs/
 bin/
 
 ### STS ###
