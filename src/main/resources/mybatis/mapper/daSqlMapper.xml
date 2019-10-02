@@ -339,4 +339,45 @@
         </if>
         order by clct_dy desc
     </select>
+
+
+    <select id="getTopSqlDayList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.sql.SqlAreaDiffVO">
+        <![CDATA[
+        SELECT /* daSqlMapper.xml/getTopSqlDayList - ns: daSqlMapper by rohys03 */
+              CUR.RN rank
+            , CUR.SQL_ID sqlId
+            , CUR.SQL_NAME sqlName
+            , (select sql_name_no from da_sqlname_list L where L.db_id = cur.db_id and L.sql_name = CUR.SQL_NAME) sqlNameNo
+            , CUR.EXEC_DIFF executions
+            , CUR.BGET_DIFF bufferGets
+            , CUR.CPU_DIFF cpuTime
+            , CUR.ELA_DIFF elapsedTime
+            , BEF.RN rank2
+            , BEF.EXEC_DIFF executions2
+            , BEF.BGET_DIFF bufferGets2
+            , BEF.CPU_DIFF cpuTime2
+            , BEF.ELA_DIFF elapsedTime2
+        From   (select rownum rn, db_id, sql_id, SQL_NAME
+                     , s.EXEC_DIFF, BGET_DIFF, CPU_DIFF, ELA_DIFF
+                FROM   (select s.*
+                        From   da_sqlId_stats s
+                        where  clct_dy = #{clctDy1}
+                        and    db_id = #{dbId}
+                        Order by EXEC_DIFF desc ) s
+                where  rownum <= 100
+                ) CUR,
+                (select rownum rn, db_id, sql_id, SQL_NAME
+                     , s.EXEC_DIFF, BGET_DIFF, CPU_DIFF, ELA_DIFF
+                FROM   (select s.*
+                        From   da_sqlId_stats s
+                        where  clct_dy = #{clctDy2}
+                        and    db_id = #{dbId}
+                        Order by EXEC_DIFF desc ) s
+                ) BEF
+        WHERE CUR.SQL_ID = BEF.SQL_ID(+)
+        And cur.db_id = BEF.db_id(+)
+        ORDER BY CUR.RN
+        ]]>
+    </select>
+
 </mapper>

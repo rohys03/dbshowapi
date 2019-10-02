@@ -63,6 +63,7 @@ public class SqasRestController {
 
         return sqlAreaDetail;
     }
+/*
 
     @RequestMapping(value = {"topSqlList"})
     public List<TopSqlVO> topSqlList(
@@ -87,6 +88,7 @@ public class SqasRestController {
 
         return topsqlList;
     }
+*/
 
     @GetMapping(value = {"sqlNameStatsHist"})
     public List<SqlNameStatsVO> sqlNameStatsHist(
@@ -181,5 +183,28 @@ public class SqasRestController {
         }
 
         return SqlNameMappVOList;
+    }
+
+    @GetMapping(value = {"topSqlDayList"})
+    public List<SqlAreaDiffVO> topSqlDayList(
+            @RequestParam(value = "dbId", required = false) final int dbId,
+            @RequestParam(value = "clctDy1", required = false) final String clctDy1,
+            @RequestParam(value = "clctDy2", required = false) final String clctDy2)
+    {
+
+        List<SqlAreaDiffVO> SqlAreaDiffVOList = null;
+
+        HashMap<String, Object> inParam = new HashMap<>();
+
+        if (dbId > 0) inParam.put("dbId", dbId);
+        if (clctDy1 != null) inParam.put("clctDy1", clctDy1);
+        if (clctDy2 != null) inParam.put("clctDy2", clctDy2);
+
+        System.out.println("/api/sqlName/:" + inParam.toString());
+        if (!inParam.isEmpty()) {
+            SqlAreaDiffVOList = sqasService.getTopSqlDayList(inParam);
+        }
+
+        return SqlAreaDiffVOList;
     }
 }

@@ -34,10 +34,10 @@ public class SqasServiceImpl implements SqasService {
         return daSqlMapper.getSqlAreaDetail(inParam);
     }
 
-    @Override
-    public List<TopSqlVO> getTopSqlList(HashMap<String, Object> inParam) {
-        return daSqlMapper.getTopSqlList(inParam);
-    }
+//    @Override
+//    public List<TopSqlVO> getTopSqlList(HashMap<String, Object> inParam) {
+//        return daSqlMapper.getTopSqlList(inParam);
+//    }
 
 
     @Override
@@ -77,6 +77,11 @@ public class SqasServiceImpl implements SqasService {
             inParam.put("partCd", clctDy.substring(6,8));
         }
         return daSqlMapper.getSqlNameMappSummary(inParam);
+    }
+
+    @Override
+    public List<SqlAreaDiffVO> getTopSqlDayList(HashMap<String, Object> inParam) {
+        return daSqlMapper.getTopSqlDayList(inParam);
     }
 
 }

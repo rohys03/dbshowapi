@@ -16,7 +16,7 @@ public interface DaSqlMapper {
 
     List<SqlAreaVO> getSqlAreaDetail(HashMap<String, Object> inparam);
 
-    List<TopSqlVO> getTopSqlList(HashMap<String, Object> inParam);
+//    List<TopSqlVO> getTopSqlList(HashMap<String, Object> inParam);
 
     List<SqlNameVO> getSqlName(HashMap<String, Object> inParam);
     List<SqlNameVO> getSqlNameList(HashMap<String, Object> inParam);
@@ -25,4 +25,6 @@ public interface DaSqlMapper {
 
     List<SqlNameMappVO> getSqlNameMapp(HashMap<String, Object> inParam);
     List<SqlNameMappVO> getSqlNameMappSummary(HashMap<String, Object> inParam);
+
+    List<SqlAreaDiffVO> getTopSqlDayList(HashMap<String, Object> inParam);
 }
