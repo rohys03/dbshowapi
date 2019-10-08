@@ -342,7 +342,6 @@
 
 
     <select id="getTopSqlDayList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.sql.SqlAreaDiffVO">
-        <![CDATA[
         SELECT /* daSqlMapper.xml/getTopSqlDayList - ns: daSqlMapper by rohys03 */
               CUR.RN rank
             , CUR.SQL_ID sqlId
@@ -352,7 +351,7 @@
             , CUR.BGET_DIFF bufferGets
             , CUR.CPU_DIFF cpuTime
             , CUR.ELA_DIFF elapsedTime
-            , BEF.RN rank2
+            , nvl(BEF.RN, '0') rank2
             , BEF.EXEC_DIFF executions2
             , BEF.BGET_DIFF bufferGets2
             , BEF.CPU_DIFF cpuTime2
@@ -363,8 +362,18 @@
                         From   da_sqlId_stats s
                         where  clct_dy = #{clctDy1}
                         and    db_id = #{dbId}
-                        Order by EXEC_DIFF desc ) s
+                        <trim prefix="ORDER BY">
+                            <if test="orderString == 'EXEC_DIFF'">  EXEC_DIFF </if>
+                            <if test="orderString == 'BGET_DIFF'"> BGET_DIFF </if>
+                        </trim>
+                        <choose>
+                            <when test="ascending eq 'ASC'"> ASC </when>
+                            <otherwise> DESC </otherwise>
+                        </choose>
+                        ) s
+        <![CDATA[
                 where  rownum <= 100
+        ]]>
                 ) CUR,
                 (select rownum rn, db_id, sql_id, SQL_NAME
                      , s.EXEC_DIFF, BGET_DIFF, CPU_DIFF, ELA_DIFF
@@ -372,12 +381,19 @@
                         From   da_sqlId_stats s
                         where  clct_dy = #{clctDy2}
                         and    db_id = #{dbId}
-                        Order by EXEC_DIFF desc ) s
+                        <trim prefix="ORDER BY">
+                            <if test="orderString == 'EXEC_DIFF'">  EXEC_DIFF </if>
+                            <if test="orderString == 'BGET_DIFF'"> BGET_DIFF </if>
+                        </trim>
+                        <choose>
+                            <when test="ascending eq 'ASC'"> ASC </when>
+                            <otherwise> DESC </otherwise>
+                        </choose>
+                        ) s
                 ) BEF
         WHERE CUR.SQL_ID = BEF.SQL_ID(+)
         And cur.db_id = BEF.db_id(+)
         ORDER BY CUR.RN
-        ]]>
     </select>
 
 </mapper>

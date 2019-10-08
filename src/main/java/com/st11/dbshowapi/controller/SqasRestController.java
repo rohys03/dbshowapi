@@ -188,8 +188,11 @@ public class SqasRestController {
     @GetMapping(value = {"topSqlDayList"})
     public List<SqlAreaDiffVO> topSqlDayList(
             @RequestParam(value = "dbId", required = false) final int dbId,
-            @RequestParam(value = "clctDy1", required = false) final String clctDy1,
-            @RequestParam(value = "clctDy2", required = false) final String clctDy2)
+            @RequestParam(value = "clctDy1") final String clctDy1,
+            @RequestParam(value = "clctDy2", required = false) final String clctDy2,
+            @RequestParam(value = "orderString", defaultValue = "EXEC_DIFF") final String orderString,
+            @RequestParam(value = "ascending", required = false) final String ascending
+            )
     {
 
         List<SqlAreaDiffVO> SqlAreaDiffVOList = null;
@@ -199,6 +202,8 @@ public class SqasRestController {
         if (dbId > 0) inParam.put("dbId", dbId);
         if (clctDy1 != null) inParam.put("clctDy1", clctDy1);
         if (clctDy2 != null) inParam.put("clctDy2", clctDy2);
+        if (orderString != null) inParam.put("orderString", orderString);
+        if (ascending != null) inParam.put("ascending", ascending);
 
         System.out.println("/api/sqlName/:" + inParam.toString());
         if (!inParam.isEmpty()) {
