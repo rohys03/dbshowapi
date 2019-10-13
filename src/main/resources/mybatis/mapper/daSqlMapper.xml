@@ -365,6 +365,8 @@
                         <trim prefix="ORDER BY">
                             <if test="orderString == 'EXEC_DIFF'">  EXEC_DIFF </if>
                             <if test="orderString == 'BGET_DIFF'"> BGET_DIFF </if>
+                            <if test="orderString == 'CPU_DIFF'"> CPU_DIFF </if>
+                            <if test="orderString == 'ELA_DIFF'"> ELA_DIFF </if>
                         </trim>
                         <choose>
                             <when test="ascending eq 'ASC'"> ASC </when>
@@ -384,6 +386,8 @@
                         <trim prefix="ORDER BY">
                             <if test="orderString == 'EXEC_DIFF'">  EXEC_DIFF </if>
                             <if test="orderString == 'BGET_DIFF'"> BGET_DIFF </if>
+                            <if test="orderString == 'CPU_DIFF'"> CPU_DIFF </if>
+                            <if test="orderString == 'ELA_DIFF'"> ELA_DIFF </if>
                         </trim>
                         <choose>
                             <when test="ascending eq 'ASC'"> ASC </when>
