@@ -1,11 +1,11 @@
 package com.st11.dbshowapi.controller;
 
-import com.st11.dbshowapi.jpa.DaDbListRepository;
-import com.st11.dbshowapi.jpa.DaDbListVO;
-import com.st11.dbshowapi.jpa.DaStatMngRepository;
-import com.st11.dbshowapi.jpa.DaStatMngVO;
+import com.st11.dbshowapi.jpa.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -18,6 +18,9 @@ public class JpaRestController {
 
     @Autowired
     DaDbListRepository daDbListRepository;
+
+    @Autowired
+    DaSqlFullTextRepository daSqlFullTextRepository;
 
     @GetMapping("/daStatMngLastUpdateDt")
     public List<DaStatMngVO> getDaStatMngLastUpdateDt(
@@ -36,9 +39,18 @@ public class JpaRestController {
 
     @GetMapping("/daDbNm")
     public DaDbListVO getDaDbName(
-            @RequestParam(value = "dbNm", required = false) final String dbNm
+            @RequestParam(value = "dbNm", required = false) final String dbName
     ) {
-        return daDbListRepository.findByDbNm(dbNm);
+        return daDbListRepository.findByDbNm(dbName);
+    }
+
+    @GetMapping("/daSqlFullText")
+    public DaSqlFullTextVO getDaDbName(
+            @RequestParam(value = "dbNm", required = false) final String dbName,
+            @RequestParam(value = "sqlId") final String sqlId) {
+        return daSqlFullTextRepository.findFirstByDbNmAndSqlId(dbName, sqlId);
     }
 
 }
+
+

@@ -24,7 +24,7 @@ public interface DaSqlMapper {
     List<SqlNameStatsVO> getSqlNameStatsHist(HashMap<String, Object> inParam);
 
     List<SqlNameMappVO> getSqlNameMapp(HashMap<String, Object> inParam);
-    List<SqlNameMappVO> getSqlNameMappSummary(HashMap<String, Object> inParam);
+    SqlNameMappVO getSqlNameMappSummary(HashMap<String, Object> inParam);
 
     List<SqlAreaDiffVO> getTopSqlDayList(HashMap<String, Object> inParam);
 }

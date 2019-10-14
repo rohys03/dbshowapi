@@ -70,7 +70,7 @@ public class SqasServiceImpl implements SqasService {
     }
 
     @Override
-    public List<SqlNameMappVO> getSqlNameMappSummary(HashMap<String, Object> inParam){
+    public SqlNameMappVO getSqlNameMappSummary(HashMap<String, Object> inParam){
         if (!inParam.containsKey("clctDy")) {
             String clctDy = dbShowApiService.getLastDaStatMng("PMETA", "DA_SQLNAME_MAPP").get(0).getClctDy();
             inParam.put("clctDy", clctDy);
