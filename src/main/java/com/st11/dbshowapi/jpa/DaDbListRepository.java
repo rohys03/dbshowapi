@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface DaDbListRepository  extends JpaRepository<DaDbListVO, Integer> {
-    List<DaDbListVO> findByDbshowUseYn(String dbshowUseYn);
+    List<DaDbListVO> findByDbshowUseYnOrderByDbId(String dbshowUseYn);
 
     @Nullable
     DaDbListVO findByDbNm(String dbNm);

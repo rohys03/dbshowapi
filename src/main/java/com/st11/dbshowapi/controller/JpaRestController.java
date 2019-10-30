@@ -34,7 +34,7 @@ public class JpaRestController {
     public List<DaDbListVO> getDaDbList(
             @RequestParam(value = "dbshowUseYn", required = false, defaultValue = "Y") final String dbshowUseYn
     ) {
-        return daDbListRepository.findByDbshowUseYn(dbshowUseYn);
+        return daDbListRepository.findByDbshowUseYnOrderByDbId(dbshowUseYn);
     }
 
     @GetMapping("/daDbNm")
@@ -52,5 +52,3 @@ public class JpaRestController {
     }
 
 }
-
-
