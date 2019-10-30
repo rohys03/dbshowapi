@@ -46,9 +46,9 @@ public class JpaRestController {
 
     @GetMapping("/daSqlFullText")
     public DaSqlFullTextVO getDaDbName(
-            @RequestParam(value = "dbNm", required = false) final String dbName,
+            @RequestParam(value = "dbId", required = false) final String dbId,
             @RequestParam(value = "sqlId") final String sqlId) {
-        return daSqlFullTextRepository.findFirstByDbNmAndSqlId(dbName, sqlId);
+        return daSqlFullTextRepository.findFirstByDbIdAndSqlId(dbId, sqlId);
     }
 
 }

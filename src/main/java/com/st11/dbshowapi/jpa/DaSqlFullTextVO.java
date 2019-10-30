@@ -11,8 +11,8 @@ import javax.persistence.*;
 public class DaSqlFullTextVO {
 
     @Id
-    @Column(name="DB_NM")
-    private String dbNm;
+    @Column(name="DB_ID")
+    private String dbId;
 
     @Id
     @Column(name="SQL_ID")
@@ -21,5 +21,9 @@ public class DaSqlFullTextVO {
     @Lob
     @Column(name="SQL_FULLTEXT")
     private String sqlFullText;
+
+    @Column(name="PROGRAM_ID")
+    private Integer programId;
+
 
 }
