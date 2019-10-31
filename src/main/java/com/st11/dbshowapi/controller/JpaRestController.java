@@ -20,6 +20,9 @@ public class JpaRestController {
     DaDbListRepository daDbListRepository;
 
     @Autowired
+    DaSqlNameListRepository daSqlNameListRepository;
+
+    @Autowired
     DaSqlFullTextRepository daSqlFullTextRepository;
 
     @GetMapping("/daStatMngLastUpdateDt")
@@ -45,10 +48,22 @@ public class JpaRestController {
     }
 
     @GetMapping("/daSqlFullText")
-    public DaSqlFullTextVO getDaDbName(
+    public DaSqlFullTextVO getDaSqlFullText(
             @RequestParam(value = "dbId", required = false) final String dbId,
             @RequestParam(value = "sqlId") final String sqlId) {
         return daSqlFullTextRepository.findFirstByDbIdAndSqlId(dbId, sqlId);
     }
 
+    @GetMapping("/daSqlNameList")
+    public List<DaSqlNameListVO> getDaSqlNameList(
+            @RequestParam(value = "dbId", required = false) final String dbId,
+            @RequestParam(value = "sqlName") final String sqlName) {
+
+        System.out.println("[DBID] : "+ dbId + "[sqlname]: " + sqlName);
+        if (dbId == null) {
+            return daSqlNameListRepository.findBySqlNameContainingOrderBySqlNameAscDbIdAsc(sqlName);
+        } else {
+            return daSqlNameListRepository.findBySqlNameContainingAndDbIdOrderBySqlNameAscDbIdAsc(sqlName, dbId);
+        }
+    }
 }
