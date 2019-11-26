@@ -161,7 +161,7 @@
     </select>
 
     <select id="getSqlNameList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.sql.SqlNameVO">
-        Select /* daSqlMapper.xml/getSqlName - ns: by rohys03 */
+        Select /* daSqlMapper.xml/getSqlNameList - ns: by rohys03 */
               /*+ ORDERED USE_NL(L S) INDEX(L PK_DA_SQLNAME_LIST)  */
             L.SQL_NAME sqlName,
             L.REP_SQL_ID repSqlId,
@@ -212,7 +212,7 @@
     </select>
     
     <select id="getSqlNameStatsHist" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.sql.SqlNameStatsVO">
-        SELECT /* daSqlMapper.xml/getSqlNameStats - ns: by rohys03 */
+        SELECT /* daSqlMapper.xml/getSqlNameStatsHist - ns: by rohys03 */
             CLCT_DY clctDy
             , DB_ID dbId
             , SQL_NAME_NO sqlNameNo
