@@ -32,7 +32,6 @@ public class JpaRestController {
 
         return daStatMngRepository.findFirstByDbNmAndStatNmOrderByClctDyDesc(dbName, statName);
     }
-
     @GetMapping("/daDbList")
     public List<DaDbListVO> getDaDbList(
             @RequestParam(value = "dbshowUseYn", required = false, defaultValue = "Y") final String dbshowUseYn

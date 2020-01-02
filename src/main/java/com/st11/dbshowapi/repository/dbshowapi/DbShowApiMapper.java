@@ -20,5 +20,7 @@ public interface DbShowApiMapper {
     DaStatMngVO getLastDaStatMng2(HashMap<String, Object> inParam);
 
     List<DaStatMngVO> getDaStatMngList(HashMap<String, Object> inParam);
+
+    List<DaStatMngAllVO> getDaStatMngAll();
 }
 

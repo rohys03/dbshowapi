@@ -415,4 +415,81 @@
         ORDER BY CUR.RN
     </select>
 
+
+
+    <select id="getTopSqlDayListByAWR" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.sql.SqlAreaDiffVO">
+        SELECT /* daSqlMapper.xml/getTopSqlDayListByAWR - ns: daSqlMapper by rohys03 */
+            /*+ USE_HASH(BEF) LEADING(D CUR BEF) */
+            Round((CUR.EXEC_DIFF / D.DB_STATS) * 100, 2) as statRatio
+            , CUR.RN rank
+            , CUR.SQL_ID sqlId
+            , CUR.SQL_NAME sqlName
+            , (select sql_name_no from da_sqlname_list L where L.db_id = cur.db_id and L.sql_name = CUR.SQL_NAME) sqlNameNo
+            , (select /*+ LEADING(T O) INDEX(T IX1_DA_SQL_FULLTEXT) */
+            Object_name
+            From dauser.da_objects o, dauser.da_sql_fulltext t
+            where o.object_id = t.program_id
+            and t.db_id = o.db_id
+            and t.sql_id = cur.sql_id
+            and rownum = 1) as objectNm
+            , CUR.EXEC_DIFF executions
+            , CUR.BGET_DIFF bufferGets
+            , CUR.CPU_DIFF cpuTime
+            , CUR.ELA_DIFF elapsedTime
+            , nvl(BEF.RN, '0') rank2
+            , BEF.EXEC_DIFF executions2
+            , BEF.BGET_DIFF bufferGets2
+            , BEF.CPU_DIFF cpuTime2
+            , BEF.ELA_DIFF elapsedTime2
+        From   (select rownum rn, db_id, sql_id, SQL_NAME
+        , s.EXEC_DIFF, BGET_DIFF, CPU_DIFF, ELA_DIFF
+        FROM   (select s.*
+        From   da_sqlId_stats s
+        where  clct_dy = #{clctDy1}
+        and    db_id = #{dbId}
+        <trim prefix="ORDER BY">
+            <if test="orderString == 'EXEC_DIFF'">  EXEC_DIFF </if>
+            <if test="orderString == 'BGET_DIFF'"> BGET_DIFF </if>
+            <if test="orderString == 'CPU_DIFF'"> CPU_DIFF </if>
+            <if test="orderString == 'ELA_DIFF'"> ELA_DIFF </if>
+        </trim>
+        <choose>
+            <when test="ascending eq 'ASC'"> ASC </when>
+            <otherwise> DESC </otherwise>
+        </choose>
+        ) s
+        <![CDATA[
+                where  rownum <= 100
+        ]]>
+        ) CUR,
+        (select rownum rn, db_id, sql_id, SQL_NAME
+        , s.EXEC_DIFF, BGET_DIFF, CPU_DIFF, ELA_DIFF
+        FROM   (select s.*
+        From   da_sqlId_stats s
+        where  clct_dy = #{clctDy2}
+        and    db_id = #{dbId}
+        <trim prefix="ORDER BY">
+            <if test="orderString == 'EXEC_DIFF'">  EXEC_DIFF </if>
+            <if test="orderString == 'BGET_DIFF'"> BGET_DIFF </if>
+            <if test="orderString == 'CPU_DIFF'"> CPU_DIFF </if>
+            <if test="orderString == 'ELA_DIFF'"> ELA_DIFF </if>
+        </trim>
+        <choose>
+            <when test="ascending eq 'ASC'"> ASC </when>
+            <otherwise> DESC </otherwise>
+        </choose>
+        ) s
+        ) BEF
+        , (select
+        ${orderString} as DB_STATS
+        , D.DB_ID
+        From da_db_stats d where  d.clct_dy = #{clctDy1} And d.db_id = #{dbId}
+        ) D
+        WHERE CUR.SQL_ID = BEF.SQL_ID(+)
+        And cur.db_id = BEF.db_id(+)
+        And cur.db_id = D.db_id(+)
+        ORDER BY CUR.RN
+    </select>
+
+
 </mapper>

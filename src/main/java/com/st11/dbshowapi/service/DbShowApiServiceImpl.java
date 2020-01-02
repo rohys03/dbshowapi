@@ -1,5 +1,6 @@
 package com.st11.dbshowapi.service;
 
+import com.st11.dbshowapi.repository.dbshowapi.DaStatMngAllVO;
 import com.st11.dbshowapi.repository.dbshowapi.DaStatMngVO;
 import com.st11.dbshowapi.repository.dbshowapi.DbShowApiMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,6 @@ public class DbShowApiServiceImpl implements DbShowApiService {
     @Autowired
     DbShowApiMapper dbShowApiMapper;
 
-    @Override
-    public List<DaStatMngVO> getDaStatMngList (HashMap<String, Object> inParam) {
-        return dbShowApiMapper.getDaStatMngList(inParam);
-    }
 
     @Override
     public List<DaStatMngVO> getLastDaStatMng(String dbName, String statName) {
@@ -36,4 +33,13 @@ public class DbShowApiServiceImpl implements DbShowApiService {
         return dbShowApiMapper.getLastDaStatMng2(inParam);
     }
 
+    @Override
+    public List<DaStatMngVO> getDaStatMngList (HashMap<String, Object> inParam) {
+        return dbShowApiMapper.getDaStatMngList(inParam);
+    }
+
+    @Override
+    public List<DaStatMngAllVO> getDaStatMngAll () {
+        return dbShowApiMapper.getDaStatMngAll();
+    }
 }

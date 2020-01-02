@@ -174,7 +174,6 @@ public class SqlRestController {
             @RequestParam(value = "ascending", required = false) final String ascending
             )
     {
-
         List<SqlAreaDiffVO> SqlAreaDiffVOList = null;
 
         HashMap<String, Object> inParam = new HashMap<>();

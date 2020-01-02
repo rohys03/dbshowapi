@@ -4,8 +4,29 @@
 
 <mapper namespace="com.st11.dbshowapi.repository.dbshowapi.DbShowApiMapper">
 
+    <select id="getDaStatMngAll" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.dbshowapi.DaStatMngAllVO">
+        SELECT
+             A.DB_ID dbId
+            ,A.db_nm dbNm
+            , Max(decode(stat_nm, 'DA_SQL_FULLTEXT', clct_Dy, null)) daSqlFullText
+            , Max(decode(stat_nm, 'DA_SQLAREA', clct_Dy, null)) daSqlarea
+            , Max(decode(stat_nm, 'DA_OBJECTS', clct_Dy, null)) daObjects
+            , Max(decode(stat_nm, 'DA_SYNC_TABLES', clct_Dy, null)) daSyncTables
+            , Max(decode(stat_nm, 'DA_SQLNAME_DTL_INFO', clct_Dy, null)) daSqlnameDtlInfo
+            , Max(decode(stat_nm, 'DA_SQLNAME_LIST', clct_Dy, null)) daSqlnameList
+            , Max(decode(stat_nm, 'DA_SQLNAME_MAPP', clct_Dy, null)) daSqlnameMapp
+        FROM da_db_list a, DAUSER.DA_STAT_MNG b
+        <![CDATA[
+        Where stat_nm(+) IN ('DA_SQL_FULLTEXT', 'DA_OBJECTS', 'DA_SQLAREA', 'DA_SYNC_TABLES',
+        'DA_SQLNAME_DTL_INFO', 'DA_SQLNAME_LIST', 'DA_SQLNAME_MAPP')
+        And a.db_nm = b.db_nm(+)
+        ]]>
+        Group by A.DB_ID,A.db_nm
+        ORDER BY DB_ID ASC
+    </select>
+
     <select id="getDaStatMngList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.dbshowapi.DaStatMngVO">
-      Select
+        Select
         DB_NM dbNm,
         STAT_NM statNm,
         clct_Dy clctDy,
@@ -13,14 +34,14 @@
         part_Cd partCd,
         create_dt createDt,
         update_dt updateDt
-      From dauser.da_stat_mng
-      where stat_nm = #{statName} and DB_NM = #{dbName}
+        From dauser.da_stat_mng
+        where stat_nm = #{statName} and DB_NM = #{dbName}
         <if test="clctDy != null">
             <![CDATA[
           and clct_dy >= #{dbName}
           ]]>
         </if>
-      order by clct_dy desc
+        order by clct_dy desc
     </select>
 
     <select id="getLastDaStatMng" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.dbshowapi.DaStatMngVO">
