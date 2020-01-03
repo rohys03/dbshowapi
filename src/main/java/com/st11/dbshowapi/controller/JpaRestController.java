@@ -25,6 +25,9 @@ public class JpaRestController {
     @Autowired
     DaSqlFullTextRepository daSqlFullTextRepository;
 
+    @Autowired
+    DaObjectRepository daObjectRepository;
+
     @GetMapping("/daStatMngLastUpdateDt")
     public List<DaStatMngVO> getDaStatMngLastUpdateDt(
             @RequestParam(value = "dbName", required = false) final String dbName,
@@ -46,18 +49,30 @@ public class JpaRestController {
         return daDbListRepository.findByDbNm(dbName);
     }
 
+    @GetMapping("/daObject")
+    public DaObjectVO getDaObject(
+            @RequestParam(value = "dbId", required = false) final String dbId,
+            @RequestParam(value = "owner", required = false) final String owner,
+            @RequestParam(value = "objectName", required = false) final String objectName,
+            @RequestParam(value = "objectType", required = false) final String objectType
+    ) {
+        return daObjectRepository.findFirstByDbIdAndOwnerAndObjectNameAndObjectType(dbId, owner, objectName, objectType);
+    }
+
     @GetMapping("/daSqlFullText")
     public DaSqlFullTextVO getDaSqlFullText(
             @RequestParam(value = "dbId", required = false) final String dbId,
-            @RequestParam(value = "sqlId") final String sqlId) {
+            @RequestParam(value = "sqlId") final String sqlId
+    ) {
         return daSqlFullTextRepository.findFirstByDbIdAndSqlId(dbId, sqlId);
     }
+
 
     @GetMapping("/daSqlNameList")
     public List<DaSqlNameListVO> getDaSqlNameList(
             @RequestParam(value = "dbId", required = false) final String dbId,
-            @RequestParam(value = "sqlName") final String sqlName) {
-
+            @RequestParam(value = "sqlName") final String sqlName
+    ) {
         System.out.println("[DBID] : "+ dbId + "[sqlname]: " + sqlName);
         if (dbId == null) {
             return daSqlNameListRepository.findBySqlNameContainingOrderBySqlNameAscDbIdAsc(sqlName);

@@ -29,6 +29,7 @@
         SELECT /* daObjectMapper.xml/getTableList by rohys03 */
           /*+ LEADING(D T) */
           D.DB_NM dbName,
+          T.DB_ID dbId,
           T.OWNER tableOwner,
           T.TABLE_NAME tableName,
           T.LOGIC_AREA_CD logicalAreaCd1,
@@ -39,6 +40,9 @@
           T.STD_OBJ_YN standardObjectYn
         From DAUSER.DA_DB_LIST D, DAUSER.DA_TABLES T
         WHERE D.DB_ID = T.DB_ID
+        <if test="dbId != null">
+            and T.DB_ID = #{dbId}
+        </if>
         <if test="dbName != null">
             and T.DB_NM = #{dbName}
         </if>

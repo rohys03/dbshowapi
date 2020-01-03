@@ -1,6 +1,5 @@
 package com.st11.dbshowapi.controller;
 
-
 import com.st11.dbshowapi.repository.object.AreaInfoVO;
 import com.st11.dbshowapi.repository.object.DaSyncTableVO;
 import com.st11.dbshowapi.repository.object.DaTableVO;
@@ -83,6 +82,8 @@ public class ObjectRestController {
 
     @GetMapping(value = {"daTables"})
     public List<DaTableVO> daTables(
+            @RequestParam(value = "dbId", required = false) final String dbId,
+            @RequestParam(value = "dbName", required = false) final String dbName,
             @RequestParam(value = "tableName", required = false) final String tableName,
             @RequestParam(value = "logicalAreaCd1", required = false) final String logicalAreaCd1,
             @RequestParam(value = "logicalAreaCd2", required = false) final String logicalAreaCd2) {
@@ -91,6 +92,8 @@ public class ObjectRestController {
 
         HashMap<String, Object> inParam = new HashMap<>();
 
+        if (dbId != null) inParam.put("dbId", dbId);
+        if (dbName != null) inParam.put("dbName", dbName);
         if (tableName != null) inParam.put("tableName", tableName);
         if (logicalAreaCd1 != null) inParam.put("logicalAreaCd1", logicalAreaCd1);
         if (logicalAreaCd2 != null) inParam.put("logicalAreaCd2", logicalAreaCd2);
