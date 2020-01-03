@@ -428,6 +428,7 @@
             </trim>
             , cur.sql_id sqlId
             , nvl(pkg_sql_script.GET_SQL_NAME(substr(cur.sql_fulltext, 1, 1000)), '(!) sql text not found.') sqlName
+            , ( select sql_name_no from da_sqlname_list L where L.db_id = cur.db_id and L.sql_name = trim(nvl(pkg_sql_script.GET_SQL_NAME(substr(cur.sql_fulltext, 1, 1000)), '(!) sql text not found.')) ) sqlNameNo
             , ( select /*+ leading(t o) index(t ix1_da_sql_fulltext) */ object_name from da_objects o, da_sql_fulltext t where o.object_id = t.program_id and t.db_id = o.db_id and t.sql_id = cur.sql_id and rownum = 1 ) objectNm
             , cur.executions_sum executions
             , cur.buffer_gets_sum bufferGets
