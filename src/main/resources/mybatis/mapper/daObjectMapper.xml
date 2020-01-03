@@ -51,7 +51,7 @@
         <if test="logicalAreaCd2 != null">
             and T.LOGIC_AREA_CD2 = #{logicalAreaCd2}
         </if>
-        ORDER BY T.LOGIC_AREA_CD, T.LOGIC_AREA_CD2
+        ORDER BY T.LOGIC_AREA_CD nulls last, T.LOGIC_AREA_CD2 nulls first
     </select>
 
     <select id="getAreaCdList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.object.AreaInfoVO">
@@ -66,7 +66,7 @@
           sum(decode(db_id, 1, 0, 4, 0, 5, 0, 1)) otherInstanceCnt
         From dauser.da_tables
         Group by logic_area_cd, logic_area_cd2
-        Order by logic_area_cd, logic_area_cd2
+        Order by logic_area_cd nulls last, logic_area_cd2 nulls first
         ]]>
     </select>
 
