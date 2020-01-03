@@ -6,7 +6,7 @@
 
     <select id="getSyncTableList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.object.DaSyncTableVO">
         Select /* DaSyncTablesMapper.xml/getSyncTableList - ns: DaSyncTablesMapper by rohys03 */
-            SRC_DB sourceDb
+            distinct SRC_DB sourceDb
             , TABLE_OWNER tableOwner
             , TABLE_NM tableName
             , TRGT_DB targetDb
