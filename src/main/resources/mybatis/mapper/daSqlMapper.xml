@@ -417,78 +417,92 @@
 
 
 
-    <select id="getTopSqlDayListByAWR" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.sql.SqlAreaDiffVO">
-        SELECT /* daSqlMapper.xml/getTopSqlDayListByAWR - ns: daSqlMapper by rohys03 */
-            /*+ USE_HASH(BEF) LEADING(D CUR BEF) */
-            Round((CUR.EXEC_DIFF / D.DB_STATS) * 100, 2) as statRatio
-            , CUR.RN rank
-            , CUR.SQL_ID sqlId
-            , CUR.SQL_NAME sqlName
-            , (select sql_name_no from da_sqlname_list L where L.db_id = cur.db_id and L.sql_name = CUR.SQL_NAME) sqlNameNo
-            , (select /*+ LEADING(T O) INDEX(T IX1_DA_SQL_FULLTEXT) */
-            Object_name
-            From dauser.da_objects o, dauser.da_sql_fulltext t
-            where o.object_id = t.program_id
-            and t.db_id = o.db_id
-            and t.sql_id = cur.sql_id
-            and rownum = 1) as objectNm
-            , CUR.EXEC_DIFF executions
-            , CUR.BGET_DIFF bufferGets
-            , CUR.CPU_DIFF cpuTime
-            , CUR.ELA_DIFF elapsedTime
-            , nvl(BEF.RN, '0') rank2
-            , BEF.EXEC_DIFF executions2
-            , BEF.BGET_DIFF bufferGets2
-            , BEF.CPU_DIFF cpuTime2
-            , BEF.ELA_DIFF elapsedTime2
-        From   (select rownum rn, db_id, sql_id, SQL_NAME
-        , s.EXEC_DIFF, BGET_DIFF, CPU_DIFF, ELA_DIFF
-        FROM   (select s.*
-        From   da_sqlId_stats s
-        where  clct_dy = #{clctDy1}
-        and    db_id = #{dbId}
-        <trim prefix="ORDER BY">
-            <if test="orderString == 'EXEC_DIFF'">  EXEC_DIFF </if>
-            <if test="orderString == 'BGET_DIFF'"> BGET_DIFF </if>
-            <if test="orderString == 'CPU_DIFF'"> CPU_DIFF </if>
-            <if test="orderString == 'ELA_DIFF'"> ELA_DIFF </if>
-        </trim>
-        <choose>
-            <when test="ascending eq 'ASC'"> ASC </when>
-            <otherwise> DESC </otherwise>
-        </choose>
-        ) s
-        <![CDATA[
-                where  rownum <= 100
-        ]]>
-        ) CUR,
-        (select rownum rn, db_id, sql_id, SQL_NAME
-        , s.EXEC_DIFF, BGET_DIFF, CPU_DIFF, ELA_DIFF
-        FROM   (select s.*
-        From   da_sqlId_stats s
-        where  clct_dy = #{clctDy2}
-        and    db_id = #{dbId}
-        <trim prefix="ORDER BY">
-            <if test="orderString == 'EXEC_DIFF'">  EXEC_DIFF </if>
-            <if test="orderString == 'BGET_DIFF'"> BGET_DIFF </if>
-            <if test="orderString == 'CPU_DIFF'"> CPU_DIFF </if>
-            <if test="orderString == 'ELA_DIFF'"> ELA_DIFF </if>
-        </trim>
-        <choose>
-            <when test="ascending eq 'ASC'"> ASC </when>
-            <otherwise> DESC </otherwise>
-        </choose>
-        ) s
-        ) BEF
+    <select id="getTopSqlDayListByAwr" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.sql.SqlAreaDiffVO">
+        Select /* daSqlMapper.xml/getTopSqlDayListByAwr - ns: daSqlMapper by rohys03 */
+            round(cur.executions_sum / d.db_stats, 2) statRatio
+            <trim prefix="  ," suffix=" as rank">
+                <if test="orderString == 'EXEC_DIFF'">  cur.executions_rank </if>
+                <if test="orderString == 'BGET_DIFF'"> cur.buffer_gets_rank </if>
+                <if test="orderString == 'CPU_DIFF'"> cur.cpu_time_rank </if>
+                <if test="orderString == 'ELA_DIFF'"> cur.elaps_time_rank </if>
+            </trim>
+            , cur.sql_id sqlId
+            , nvl(pkg_sql_script.GET_SQL_NAME(substr(cur.sql_fulltext, 1, 1000)), '(!) sql text not found.') sqlName
+            , ( select /*+ leading(t o) index(t ix1_da_sql_fulltext) */ object_name from da_objects o, da_sql_fulltext t where o.object_id = t.program_id and t.db_id = o.db_id and t.sql_id = cur.sql_id and rownum = 1 ) objectNm
+            , cur.executions_sum executions
+            , cur.buffer_gets_sum bufferGets
+            , cur.cpu_time_sum cpuTime
+            , cur.elaps_time_sum elapsedTime
+            <trim prefix="  ," suffix=" as rank2">
+                <if test="orderString == 'EXEC_DIFF'">  bef.executions_rank </if>
+                <if test="orderString == 'BGET_DIFF'"> bef.buffer_gets_rank </if>
+                <if test="orderString == 'CPU_DIFF'"> bef.cpu_time_rank </if>
+                <if test="orderString == 'ELA_DIFF'"> bef.elaps_time_rank </if>
+            </trim>
+        , bef.executions_sum executions2
+            , bef.buffer_gets_sum bufferGets2
+            , bef.cpu_time_sum cpuTime2
+            , bef.elaps_time_sum elapsedTime2
+        from (
+            select  a.db_id
+                , a.sql_id
+                , ( select b.sql_fulltext from da_sql_fulltext b where b.db_id = a.db_id and b.sql_id = a.sql_id and rownum = 1 ) sql_fulltext
+                , count(distinct plan_hash_value) plan_cnt
+                , sum(executions_delta) executions_sum
+                , sum(buffer_gets_delta) buffer_gets_sum
+                , round(sum(cpu_time_delta) / 1000000, 2) cpu_time_sum
+                , round(sum(elapsed_time_delta) / 1000000, 2) elaps_time_sum
+                , case when sum(executions_delta) <![CDATA[ <=0 ]]> then null
+                else round(sum(buffer_gets_delta) / sum(executions_delta), 4) end buffer_gets_avg
+                , case when sum(executions_delta) <![CDATA[ <=0 ]]> then null
+                else round(sum(cpu_time_delta) / sum(executions_delta) / 1000000, 4) end cpu_time_avg
+                , case when sum(executions_delta) <![CDATA[ <=0 ]]> then null
+                else round(sum(elapsed_time_delta) / sum(executions_delta) / 1000000, 4) end elaps_time_avg
+                , row_number() over ( partition by a.db_id order by sum(a.executions_delta) desc nulls last ) executions_rank
+                , row_number() over ( partition by a.db_id order by sum(a.buffer_gets_delta) desc nulls last ) buffer_gets_rank
+                , row_number() over ( partition by a.db_id order by sum(a.cpu_time_delta) desc nulls last ) cpu_time_rank
+                , row_number() over ( partition by a.db_id order by sum(a.elapsed_time_delta) desc nulls last ) elaps_time_rank
+            from DA_AWR_SQLSTAT a
+            where a.snap_dt between to_timestamp(#{clctDy1} || '000000.000', 'YYYYMMDDHH24MISS.FF3') and to_timestamp(#{clctDy1}|| '235959.999', 'YYYYMMDDHH24MISS.FF3')
+            and a.db_id = #{dbId}
+            group by a.db_id, a.sql_id
+        ) cur
+        , (
+            select a.db_id
+                , a.sql_id
+                , count(distinct plan_hash_value) plan_cnt
+                , sum(executions_delta) executions_sum
+                , sum(buffer_gets_delta) buffer_gets_sum
+                , round(sum(cpu_time_delta) / 1000000, 2) cpu_time_sum
+                , round(sum(elapsed_time_delta) / 1000000, 2) elaps_time_sum
+                , case when sum(executions_delta) <![CDATA[ <=0 ]]> then null
+                else round(sum(buffer_gets_delta) / sum(executions_delta), 4) end buffer_gets_avg
+                , case when sum(executions_delta)<![CDATA[ <=0 ]]> then null
+                else round(sum(cpu_time_delta) / sum(executions_delta) / 1000000, 4) end cpu_time_avg
+                , case when sum(executions_delta) <![CDATA[ <=0 ]]> then null
+                else round(sum(elapsed_time_delta) / sum(executions_delta) / 1000000, 4) end elaps_time_avg
+                , row_number() over ( partition by a.db_id order by sum(a.executions_delta) desc nulls last ) executions_rank
+                , row_number() over ( partition by a.db_id order by sum(a.buffer_gets_delta) desc nulls last ) buffer_gets_rank
+                , row_number() over ( partition by a.db_id order by sum(a.cpu_time_delta) desc nulls last ) cpu_time_rank
+                , row_number() over ( partition by a.db_id order by sum(a.elapsed_time_delta) desc nulls last ) elaps_time_rank
+            from DA_AWR_SQLSTAT a
+            where a.snap_dt between to_timestamp(#{clctDy2} || '000000.000', 'YYYYMMDDHH24MISS.FF3') and to_timestamp(#{clctDy2} || '235959.999', 'YYYYMMDDHH24MISS.FF3')
+            and a.db_id = #{dbId}
+            group by a.db_id, a.sql_id
+        ) bef
         , (select
-        ${orderString} as DB_STATS
-        , D.DB_ID
+            ${orderString} as DB_STATS
+            , D.DB_ID
         From da_db_stats d where  d.clct_dy = #{clctDy1} And d.db_id = #{dbId}
         ) D
-        WHERE CUR.SQL_ID = BEF.SQL_ID(+)
-        And cur.db_id = BEF.db_id(+)
+        where cur.db_id = bef.db_id(+)
+        and cur.sql_id = bef.sql_id(+)
         And cur.db_id = D.db_id(+)
-        ORDER BY CUR.RN
+        order by rank
+        /*      cur.executions_rank
+            , cur.buffer_gets_rank
+            , cur.cpu_time_rank
+            , cur.elaps_time_rank*/
     </select>
 
 

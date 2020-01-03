@@ -22,4 +22,5 @@ public interface SqasService {
     SqlNameMappVO getSqlNameMappSummary(HashMap<String, Object> inParam);
 
     List<SqlAreaDiffVO> getTopSqlDayList(HashMap<String, Object> inParam);
+    List<SqlAreaDiffVO> getTopSqlDayListByAwr(HashMap<String, Object> inParam);
 }

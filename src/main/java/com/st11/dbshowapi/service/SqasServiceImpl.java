@@ -84,4 +84,10 @@ public class SqasServiceImpl implements SqasService {
         return daSqlMapper.getTopSqlDayList(inParam);
     }
 
+
+    @Override
+    public List<SqlAreaDiffVO> getTopSqlDayListByAwr(HashMap<String, Object> inParam) {
+        return daSqlMapper.getTopSqlDayListByAwr(inParam);
+    }
+
 }
