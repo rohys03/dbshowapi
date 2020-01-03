@@ -51,6 +51,7 @@
         <if test="logicalAreaCd2 != null">
             and T.LOGIC_AREA_CD2 = #{logicalAreaCd2}
         </if>
+        ORDER BY T.LOGIC_AREA_CD, T.LOGIC_AREA_CD2
     </select>
 
     <select id="getAreaCdList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.object.AreaInfoVO">
