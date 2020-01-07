@@ -201,8 +201,8 @@
             where info.owner = t.owner
             and info.object_name = t.table_name
             and object_type = 'TABLE'
-            <if test="logicalAreaCd1 != null">
-                and T.LOGIC_AREA_CD = #{logicalAreaCd1}
+            <if test="logicalAreaCd != null">
+                and T.LOGIC_AREA_CD = #{logicalAreaCd}
             </if>
             <if test="logicalAreaCd2 != null">
                 and T.LOGIC_AREA_CD2 = #{logicalAreaCd2}

@@ -7,7 +7,7 @@
     <select id="getSyncTableList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.object.DaSyncTableVO">
         Select /* DaSyncTablesMapper.xml/getSyncTableList - ns: DaSyncTablesMapper by rohys03 */
             distinct SRC_DB sourceDb
-            , TABLE_OWNER tableOwner
+            , TABLE_OWNER owner
             , TABLE_NM tableName
             , TRGT_DB targetDb
             , S.HOSTNAME hostname
@@ -30,9 +30,9 @@
           /*+ LEADING(D T) */
           D.DB_NM dbName,
           T.DB_ID dbId,
-          T.OWNER tableOwner,
+          T.OWNER owner,
           T.TABLE_NAME tableName,
-          T.LOGIC_AREA_CD logicalAreaCd1,
+          T.LOGIC_AREA_CD logicalAreaCd,
           T.LOGIC_AREA_CD2 logicalAreaCd2,
           T.PHSCL_AREA_CD physicalAreaCd,
           T.TABLE_COMMENTS tableComments,
@@ -49,8 +49,8 @@
         <if test="tableName != null">
             and T.TABLE_NAME = #{tableName}
         </if>
-        <if test="logicalAreaCd1 != null">
-            and T.LOGIC_AREA_CD = #{logicalAreaCd1}
+        <if test="logicalAreaCd != null">
+            and T.LOGIC_AREA_CD = #{logicalAreaCd}
         </if>
         <if test="logicalAreaCd2 != null">
             and T.LOGIC_AREA_CD2 = #{logicalAreaCd2}

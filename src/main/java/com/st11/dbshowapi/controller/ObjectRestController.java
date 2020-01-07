@@ -80,12 +80,12 @@ public class ObjectRestController {
         return daSyncTablesVOList;
     }
 
-    @GetMapping(value = {"daTables"})
-    public List<DaTableVO> daTables(
+    @GetMapping(value = {"daTableList"})
+    public List<DaTableVO> daTableList(
             @RequestParam(value = "dbId", required = false) final String dbId,
             @RequestParam(value = "dbName", required = false) final String dbName,
             @RequestParam(value = "tableName", required = false) final String tableName,
-            @RequestParam(value = "logicalAreaCd1", required = false) final String logicalAreaCd1,
+            @RequestParam(value = "logicalAreaCd", required = false) final String logicalAreaCd,
             @RequestParam(value = "logicalAreaCd2", required = false) final String logicalAreaCd2) {
 
         List<DaTableVO> daTableVOList = null;
@@ -95,10 +95,10 @@ public class ObjectRestController {
         if (dbId != null) inParam.put("dbId", dbId);
         if (dbName != null) inParam.put("dbName", dbName);
         if (tableName != null) inParam.put("tableName", tableName);
-        if (logicalAreaCd1 != null) inParam.put("logicalAreaCd1", logicalAreaCd1);
+        if (logicalAreaCd != null) inParam.put("logicalAreaCd", logicalAreaCd);
         if (logicalAreaCd2 != null) inParam.put("logicalAreaCd2", logicalAreaCd2);
 
-        System.out.println("/api/daTables/:" + inParam.toString());
+        System.out.println("/api/daTableList/:" + inParam.toString());
         daTableVOList = objectService.getTableList(inParam);
 
         return daTableVOList;

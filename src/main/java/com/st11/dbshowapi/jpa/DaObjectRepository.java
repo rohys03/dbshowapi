@@ -12,5 +12,5 @@ public interface DaObjectRepository extends JpaRepository<DaObjectVO, DaObjectId
     DaObjectVO findFirstByDbIdAndOwnerAndObjectNameAndObjectType(String dbId, String owner, String objectName, String objectType);
 
     @Nullable
-    List<DaObjectVO> findAllByObjectNameAndObjectType(String objectName, String objectType);
+    List<DaObjectVO> findAllByObjectName(String objectName);
 }

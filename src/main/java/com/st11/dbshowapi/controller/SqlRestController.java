@@ -69,7 +69,7 @@ public class SqlRestController {
     public List<SqlNameVO> sqlNameList(
             @RequestParam(value = "clctDy", required = false) final String clctDy,
             @RequestParam(value = "sqlName", required = false) final String sqlName,
-            @RequestParam(value = "logicalAreaCd1", required = false) final String logicalAreaCd1,
+            @RequestParam(value = "logicalAreaCd", required = false) final String logicalAreaCd,
             @RequestParam(value = "logicalAreaCd2", required = false) final String logicalAreaCd2) {
 
         List<SqlNameVO> sqlNameVOList = null;
@@ -78,7 +78,7 @@ public class SqlRestController {
 
         if (clctDy != null) inParam.put("clctDy", clctDy);
         if (sqlName != null) inParam.put("sqlName", sqlName);
-        if (logicalAreaCd1 != null) inParam.put("logicalAreaCd1", logicalAreaCd1);
+        if (logicalAreaCd != null) inParam.put("logicalAreaCd", logicalAreaCd);
         if (logicalAreaCd2 != null) inParam.put("logicalAreaCd2", logicalAreaCd2);
 
         System.out.println("/api/sqlNameList/:" + inParam.toString());

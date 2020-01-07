@@ -28,6 +28,9 @@ public class JpaRestController {
     @Autowired
     DaObjectRepository daObjectRepository;
 
+    @Autowired
+    DaTableRepository daTableRepository;
+
     @GetMapping("/daStatMngLastUpdateDt")
     public List<DaStatMngVO> getDaStatMngLastUpdateDt(
             @RequestParam(value = "dbName", required = false) final String dbName,
@@ -57,6 +60,22 @@ public class JpaRestController {
             @RequestParam(value = "objectType", required = false) final String objectType
     ) {
         return daObjectRepository.findFirstByDbIdAndOwnerAndObjectNameAndObjectType(dbId, owner, objectName, objectType);
+    }
+
+    @GetMapping("/daObjectList")
+    public List<DaObjectVO> getDaObjectList(
+            @RequestParam(value = "objectName", required = false) final String objectName
+    ) {
+        return daObjectRepository.findAllByObjectName(objectName);
+    }
+
+    @GetMapping("/daTable")
+    public DaTableVO getdaTable(
+            @RequestParam(value = "dbId", required = false) final String dbId,
+            @RequestParam(value = "owner", required = false) final String owner,
+            @RequestParam(value = "objectName", required = false) final String objectName
+    ) {
+        return daTableRepository.findFirstByDbIdAndOwnerAndTableName(dbId, owner, objectName);
     }
 
     @GetMapping("/daSqlFullText")

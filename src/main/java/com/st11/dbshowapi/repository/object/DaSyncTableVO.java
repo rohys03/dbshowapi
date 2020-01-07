@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 @Data
 public class DaSyncTableVO {
     private String sourceDb;
-    private String tableOwner;
+    private String owner;
     private String tableName;
     private String targetDb;
     private String hostname;
