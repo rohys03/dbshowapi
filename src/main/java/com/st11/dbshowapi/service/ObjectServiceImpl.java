@@ -14,10 +14,6 @@ public class ObjectServiceImpl implements ObjectService {
     DaObjectMapper daObjectMapper;
 
     @Override
-    public List<RefObjectVO> getRefObjectList(HashMap<String, Object> inparam) {
-        return daObjectMapper.getRefObjectList(inparam);
-    }
-    @Override
     public List<DaSyncTableVO> getSyncTableList(HashMap<String, Object> inparam) {
         return daObjectMapper.getSyncTableList(inparam);
     }

@@ -188,8 +188,8 @@
             S.CREATE_DT createDt
         From dauser.da_sqlname_list L, dauser.da_sqlname_stats s
         where 1=1
-        and l.SQL_NAME_NO = s.SQL_NAME_NO
-        and l.db_id = s.db_id
+        and l.SQL_NAME_NO = s.SQL_NAME_NO(+)
+        and l.db_id = s.db_id(+)
         and s.CLCT_DY = #{clctDy}
         <if test="sqlName != null">
             AND S.SQL_NAME_NO in (select sql_name_no from dauser.da_sqlname_list where sql_name like '%'||#{sqlName}||'%' )
@@ -198,9 +198,15 @@
             select /*+ leading(T) use_nl(Info) index(INFO IX1_DA_SQLNAME_DTL_INFO) */
                 info.sql_name_no
             From DAuser.DA_SQLNAME_DTL_INFO Info, dauser.da_tables t
-            where info.owner = t.owner
-            and info.object_name = t.table_name
+            where info.owner = t.owner(+)
+            and info.object_name = t.table_name(+)
             and object_type = 'TABLE'
+            <if test="owner != null">
+                and info.owner = #{owner}
+            </if>
+            <if test="tableName != null">
+                and info.object_name = #{tableName}
+            </if>
             <if test="logicalAreaCd != null">
                 and T.LOGIC_AREA_CD = #{logicalAreaCd}
             </if>
@@ -208,7 +214,7 @@
                 and T.LOGIC_AREA_CD2 = #{logicalAreaCd2}
             </if>
         )
-        ORDER BY L.SQL_NAME, L.DB_ID, S.CLCT_DY desc
+        ORDER BY execDiff desc nulls last, L.SQL_NAME, L.DB_ID, S.CLCT_DY desc
     </select>
     
     <select id="getSqlNameStatsHist" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.sql.SqlNameStatsVO">

@@ -68,6 +68,8 @@ public class SqlRestController {
     @GetMapping(value = {"sqlNameList"})
     public List<SqlNameVO> sqlNameList(
             @RequestParam(value = "clctDy", required = false) final String clctDy,
+            @RequestParam(value = "owner", required = false) final String owner,
+            @RequestParam(value = "tableName", required = false) final String tableName,
             @RequestParam(value = "sqlName", required = false) final String sqlName,
             @RequestParam(value = "logicalAreaCd", required = false) final String logicalAreaCd,
             @RequestParam(value = "logicalAreaCd2", required = false) final String logicalAreaCd2) {
@@ -77,6 +79,8 @@ public class SqlRestController {
         HashMap<String, Object> inParam = new HashMap<>();
 
         if (clctDy != null) inParam.put("clctDy", clctDy);
+        if (owner != null) inParam.put("owner", owner);
+        if (tableName != null) inParam.put("tableName", tableName);
         if (sqlName != null) inParam.put("sqlName", sqlName);
         if (logicalAreaCd != null) inParam.put("logicalAreaCd", logicalAreaCd);
         if (logicalAreaCd2 != null) inParam.put("logicalAreaCd2", logicalAreaCd2);

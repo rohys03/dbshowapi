@@ -3,10 +3,12 @@ package com.st11.dbshowapi.controller;
 import com.st11.dbshowapi.repository.object.AreaInfoVO;
 import com.st11.dbshowapi.repository.object.DaSyncTableVO;
 import com.st11.dbshowapi.repository.object.DaTableVO;
-import com.st11.dbshowapi.repository.object.RefObjectVO;
 import com.st11.dbshowapi.service.ObjectService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,49 +19,6 @@ public class ObjectRestController {
 
     @Autowired
     private ObjectService objectService;
-
-    @GetMapping(value = {"referencedObject/{dbName}/{objectType}/{owner}/{objectName}"})
-    public List<RefObjectVO> referencedObject(
-            @PathVariable final String dbName, @PathVariable final String objectType,
-            @PathVariable final String owner, @PathVariable final String objectName) {
-
-        List<RefObjectVO> refObjects = null;
-        System.out.println("/api/referencedObject/dbName:"+ dbName + "/objectType:" + objectType + "/owner:"+ owner + "/objectName:" + objectName);
-
-        HashMap<String, Object> inParam = new HashMap<>();
-        inParam.put("owner", owner);
-        inParam.put("objectName", objectName);
-        inParam.put("objectType", objectType);
-
-        if (objectName != null && owner != null) {
-            refObjects = objectService.getRefObjectList(inParam);
-        }
-
-        return refObjects;
-    }
-
-//    @GetMapping(value = {"referencedObject"})
-//    public List<RefObjectVO> referencedObject(
-//            @RequestParam(value = "dbName", required = false) final String dbName,
-//            @RequestParam(value = "objectType", required = false) final String objectType,
-//            @RequestParam(value = "owner") final String owner,
-//            @RequestParam(value = "objectName") final String objectName) {
-//
-//        List<RefObjectVO> refObjects = null;
-//
-//        HashMap<String, Object> inParam = new HashMap<>();
-//
-//        if (dbName != null) inParam.put("dbName", dbName);
-//        if (objectType != null) inParam.put("objectType", objectType);
-//        if (owner != null) inParam.put("owner", owner);
-//        if (objectName != null) inParam.put("objectName", objectName);
-//
-//        System.out.println("/api/referencedObject/dbName:"+ inParam.toString());
-//        refObjects = objectService.getRefObjectList(inParam);
-//
-//        return refObjects;
-//    }
-
 
     @GetMapping(value = {"daSyncData"})
     public List<DaSyncTableVO> daSyncData(
