@@ -194,9 +194,10 @@
         <if test="sqlName != null">
             AND S.SQL_NAME_NO in (select sql_name_no from dauser.da_sqlname_list where sql_name like '%'||#{sqlName}||'%' )
         </if>
-        and l.sql_name_no in (
-            select /*+ leading(T) use_nl(Info) index(INFO IX1_DA_SQLNAME_DTL_INFO) */
-                info.sql_name_no
+
+        <if test="tableName != null">
+            and l.sql_name_no in (select /*+ leading(T) use_nl(Info) index(INFO IX1_DA_SQLNAME_DTL_INFO) */
+              info.sql_name_no
             From DAuser.DA_SQLNAME_DTL_INFO Info, dauser.da_tables t
             where info.owner = t.owner(+)
             and info.object_name = t.table_name(+)
@@ -207,13 +208,23 @@
             <if test="tableName != null">
                 and info.object_name = #{tableName}
             </if>
+            )
+        </if>
+        <if test="logicalAreaCd != null or logicalAreaCd2 != null">
+            and l.sql_name_no in (select /*+ leading(T) use_nl(Info) index(INFO IX1_DA_SQLNAME_DTL_INFO) */
+              info.sql_name_no
+            From DAuser.DA_SQLNAME_DTL_INFO Info, dauser.da_tables t
+            where info.owner = t.owner(+)
+            and info.object_name = t.table_name(+)
+            and object_type = 'TABLE'
             <if test="logicalAreaCd != null">
                 and T.LOGIC_AREA_CD = #{logicalAreaCd}
             </if>
             <if test="logicalAreaCd2 != null">
                 and T.LOGIC_AREA_CD2 = #{logicalAreaCd2}
             </if>
-        )
+            )
+        </if>
         ORDER BY execDiff desc nulls last, L.SQL_NAME, L.DB_ID, S.CLCT_DY desc
     </select>
     

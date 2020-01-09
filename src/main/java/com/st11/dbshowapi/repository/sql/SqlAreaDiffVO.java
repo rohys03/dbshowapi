@@ -1,8 +1,10 @@
 package com.st11.dbshowapi.repository.sql;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class SqlAreaDiffVO extends SqlAreaVO {
 
     private String rank;
