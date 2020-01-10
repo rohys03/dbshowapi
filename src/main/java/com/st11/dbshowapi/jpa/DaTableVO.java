@@ -40,4 +40,7 @@ public class DaTableVO {
 
     @Column(name="STD_OBJ_YN")
     private String standardObjectYn;
+
+    @Column(name="subjAreaCd")
+    private String subjAreaCd;
 }

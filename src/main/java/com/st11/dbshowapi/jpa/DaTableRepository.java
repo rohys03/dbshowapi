@@ -16,4 +16,7 @@ public interface DaTableRepository extends JpaRepository<DaTableVO, DaTableId> {
 
     @Nullable
     List<DaTableVO> findAllByLogicalAreaCdAndLogicalAreaCd2(String logicalAreaCd, String logicalAreaCd2);
+
+    @Nullable
+    List<DaTableVO> findAllBySubjAreaCd (String subjAreaCd);
 }

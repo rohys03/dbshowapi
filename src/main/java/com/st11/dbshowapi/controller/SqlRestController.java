@@ -72,7 +72,9 @@ public class SqlRestController {
             @RequestParam(value = "tableName", required = false) final String tableName,
             @RequestParam(value = "sqlName", required = false) final String sqlName,
             @RequestParam(value = "logicalAreaCd", required = false) final String logicalAreaCd,
-            @RequestParam(value = "logicalAreaCd2", required = false) final String logicalAreaCd2) {
+            @RequestParam(value = "logicalAreaCd2", required = false) final String logicalAreaCd2,
+            @RequestParam(value = "subjAreaCd", required = false) final String subjAreaCd
+    ) {
 
         List<SqlNameVO> sqlNameVOList = null;
 
@@ -84,6 +86,7 @@ public class SqlRestController {
         if (sqlName != null) inParam.put("sqlName", sqlName);
         if (logicalAreaCd != null) inParam.put("logicalAreaCd", logicalAreaCd);
         if (logicalAreaCd2 != null) inParam.put("logicalAreaCd2", logicalAreaCd2);
+        if (subjAreaCd != null) inParam.put("subjAreaCd", subjAreaCd);
 
         System.out.println("/api/sqlNameList/:" + inParam.toString());
         sqlNameVOList = sqasService.getSqlNameList(inParam);

@@ -14,5 +14,6 @@ public interface DaObjectMapper {
     List<DaSyncTableVO> getSyncTableList(HashMap<String, Object> inParam);
     List<DaTableVO> getTableList(HashMap<String, Object> inparam);
     List<AreaInfoVO> getAreaCdList(HashMap<String, Object> inparam);
+    List<DaTabSubjAreaVO> getDaTabSubjAreaList(HashMap<String, Object> inparam);
 }
 

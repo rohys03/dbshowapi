@@ -2,6 +2,7 @@ package com.st11.dbshowapi.controller;
 
 import com.st11.dbshowapi.repository.object.AreaInfoVO;
 import com.st11.dbshowapi.repository.object.DaSyncTableVO;
+import com.st11.dbshowapi.repository.object.DaTabSubjAreaVO;
 import com.st11.dbshowapi.repository.object.DaTableVO;
 import com.st11.dbshowapi.service.ObjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,9 @@ public class ObjectRestController {
             @RequestParam(value = "dbName", required = false) final String dbName,
             @RequestParam(value = "tableName", required = false) final String tableName,
             @RequestParam(value = "logicalAreaCd", required = false) final String logicalAreaCd,
-            @RequestParam(value = "logicalAreaCd2", required = false) final String logicalAreaCd2) {
+            @RequestParam(value = "logicalAreaCd2", required = false) final String logicalAreaCd2,
+            @RequestParam(value = "subjAreaCd", required = false) final String subjAreaCd
+    ) {
 
         List<DaTableVO> daTableVOList = null;
 
@@ -56,6 +59,7 @@ public class ObjectRestController {
         if (tableName != null) inParam.put("tableName", tableName);
         if (logicalAreaCd != null) inParam.put("logicalAreaCd", logicalAreaCd);
         if (logicalAreaCd2 != null) inParam.put("logicalAreaCd2", logicalAreaCd2);
+        if (subjAreaCd != null) inParam.put("subjAreaCd", subjAreaCd);
 
         System.out.println("/api/daTableList/:" + inParam.toString());
         daTableVOList = objectService.getTableList(inParam);
@@ -73,9 +77,27 @@ public class ObjectRestController {
         HashMap<String, Object> inParam = new HashMap<>();
         if (logicAreaCd != null) inParam.put("logicAreaCd", logicAreaCd);
 
-        System.out.println("/api/logicalAreaTables/:" + logicAreaCd);
+        System.out.println("/api/logicalArea/:" + logicAreaCd);
         areaInfoVOList = objectService.getAreaCdList(inParam);
 
         return areaInfoVOList;
+    }
+
+    @GetMapping(value = {"daTabSubjAreaList"})
+    public List<DaTabSubjAreaVO> daTabSubjAreaList(
+            @RequestParam(value = "subjAreaCd", required = false) final String subjAreaCd) {
+
+        List<DaTabSubjAreaVO> daTabSubjAreaVOS = null;
+
+        HashMap<String, Object> inParam = new HashMap<>();
+        if (subjAreaCd != null) inParam.put("subjAreaCd", subjAreaCd);
+
+        System.out.println("/api/logicalArea/:" + inParam.toString());
+
+        daTabSubjAreaVOS = objectService.getDaTabSubjAreaList(inParam);
+
+        System.out.println("[datab]: " + daTabSubjAreaVOS.toString());
+
+        return daTabSubjAreaVOS;
     }
 }

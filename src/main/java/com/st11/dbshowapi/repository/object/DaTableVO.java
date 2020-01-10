@@ -14,4 +14,5 @@ public class DaTableVO {
     private String tableComments;
     private String tableCreateDt;
     private String standardObjectYn;
+    private String subjAreaCd;
 }
