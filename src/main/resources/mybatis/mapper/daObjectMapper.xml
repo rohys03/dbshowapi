@@ -50,12 +50,12 @@
             and T.DB_NM = #{dbName}
         </if>
         <if test="tableName != null">
-            and T.TABLE_NAME = #{tableName}
+            and T.TABLE_NAME like '%'|| #{tableName} || '%'
         </if>
         <if test="subjAreaCd != null">
             and (S.SUBJ_AREA_CD = #{subjAreaCd} or S.HGRNK_SUBJ_AREA_CD = #{subjAreaCd})
         </if>
-        ORDER BY D.DB_ID, S.HGRNK_SUBJ_AREA_CD nulls last, S.SUBJ_AREA_CD nulls first
+        ORDER BY D.DB_ID, S.HGRNK_SUBJ_AREA_CD nulls last, S.SUBJ_AREA_CD nulls first, T.TABLE_NAME ASC
     </select>
 
     <select id="getAreaCdList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.object.AreaInfoVO">
