@@ -144,7 +144,7 @@ public class SqlRestController {
     @GetMapping(value = {"sqlNameMappSummary"})
     public SqlNameMappVO sqlNameMappSummary (
             @RequestParam(value = "clctDy", required = false) final String clctDy,
-            @RequestParam(value = "dbId", required = false) final int dbId,
+            @RequestParam(value = "dbId", required = false) final String dbId,
             @RequestParam(value = "sqlName", required = false) final String sqlName,
             @RequestParam(value = "sqlNameNo", required = false) final String sqlNameNo) {
 
@@ -157,7 +157,7 @@ public class SqlRestController {
             inParam.put("clctDy", clctDy);
             inParam.put("partCd", clctDy.substring(6,8));
         }
-        if (dbId > 0) inParam.put("dbId", dbId);
+        if (dbId != null) inParam.put("dbId", dbId);
         if (sqlName != null) inParam.put("sqlName", sqlName);
         if (sqlNameNo != null) inParam.put("sqlNameNo", sqlNameNo);
 

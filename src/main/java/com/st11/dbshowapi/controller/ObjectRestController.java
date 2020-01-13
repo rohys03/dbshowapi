@@ -45,8 +45,6 @@ public class ObjectRestController {
             @RequestParam(value = "dbId", required = false) final String dbId,
             @RequestParam(value = "dbName", required = false) final String dbName,
             @RequestParam(value = "tableName", required = false) final String tableName,
-//            @RequestParam(value = "logicalAreaCd", required = false) final String logicalAreaCd,
-//            @RequestParam(value = "logicalAreaCd2", required = false) final String logicalAreaCd2,
             @RequestParam(value = "subjAreaCd", required = false) final String subjAreaCd
     ) {
 
@@ -57,8 +55,6 @@ public class ObjectRestController {
         if (dbId != null) inParam.put("dbId", dbId);
         if (dbName != null) inParam.put("dbName", dbName);
         if (tableName != null) inParam.put("tableName", tableName);
-//        if (logicalAreaCd != null) inParam.put("logicalAreaCd", logicalAreaCd);
-//        if (logicalAreaCd2 != null) inParam.put("logicalAreaCd2", logicalAreaCd2);
         if (subjAreaCd != null) inParam.put("subjAreaCd", subjAreaCd);
 
         System.out.println("/api/daTableList/:" + inParam.toString());
@@ -95,8 +91,6 @@ public class ObjectRestController {
         System.out.println("/api/logicalArea/:" + inParam.toString());
 
         daTabSubjAreaVOS = objectService.getDaTabSubjAreaList(inParam);
-
-        System.out.println("[datab]: " + daTabSubjAreaVOS.toString());
 
         return daTabSubjAreaVOS;
     }
