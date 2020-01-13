@@ -41,6 +41,7 @@ public class DaTableVO {
     @Column(name="STD_OBJ_YN")
     private String standardObjectYn;
 
-    @Column(name="subjAreaCd")
+    @Column(name="SUBJ_AREA_CD")
     private String subjAreaCd;
+
 }

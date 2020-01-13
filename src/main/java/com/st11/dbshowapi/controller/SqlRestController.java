@@ -71,8 +71,8 @@ public class SqlRestController {
             @RequestParam(value = "owner", required = false) final String owner,
             @RequestParam(value = "tableName", required = false) final String tableName,
             @RequestParam(value = "sqlName", required = false) final String sqlName,
-            @RequestParam(value = "logicalAreaCd", required = false) final String logicalAreaCd,
-            @RequestParam(value = "logicalAreaCd2", required = false) final String logicalAreaCd2,
+//            @RequestParam(value = "logicalAreaCd", required = false) final String logicalAreaCd,
+//            @RequestParam(value = "logicalAreaCd2", required = false) final String logicalAreaCd2,
             @RequestParam(value = "subjAreaCd", required = false) final String subjAreaCd
     ) {
 
@@ -84,8 +84,8 @@ public class SqlRestController {
         if (owner != null) inParam.put("owner", owner);
         if (tableName != null) inParam.put("tableName", tableName);
         if (sqlName != null) inParam.put("sqlName", sqlName);
-        if (logicalAreaCd != null) inParam.put("logicalAreaCd", logicalAreaCd);
-        if (logicalAreaCd2 != null) inParam.put("logicalAreaCd2", logicalAreaCd2);
+//        if (logicalAreaCd != null) inParam.put("logicalAreaCd", logicalAreaCd);
+//        if (logicalAreaCd2 != null) inParam.put("logicalAreaCd2", logicalAreaCd2);
         if (subjAreaCd != null) inParam.put("subjAreaCd", subjAreaCd);
 
         System.out.println("/api/sqlNameList/:" + inParam.toString());

@@ -211,11 +211,12 @@
             )
         </if>
         <if test="logicalAreaCd != null or logicalAreaCd2 != null  or subjAreaCd != null ">
-            and l.sql_name_no in (select /*+ leading(T) use_nl(Info) index(INFO IX1_DA_SQLNAME_DTL_INFO) */
+            and l.sql_name_no in (select /*+ leading(S T) use_nl(Info) index(INFO IX1_DA_SQLNAME_DTL_INFO) */
               info.sql_name_no
-            From DAuser.DA_SQLNAME_DTL_INFO Info, dauser.da_tables t
+            From DAuser.DA_SQLNAME_DTL_INFO Info, dauser.da_tables t, dauser.da_tab_subj_area s
             where info.owner = t.owner(+)
             and info.object_name = t.table_name(+)
+            and t.subj_area_Cd = s.subj_area_cd
             and object_type = 'TABLE'
             <if test="logicalAreaCd != null">
                 and T.LOGIC_AREA_CD = #{logicalAreaCd}
@@ -224,7 +225,7 @@
                 and T.LOGIC_AREA_CD2 = #{logicalAreaCd2}
             </if>
             <if test="subjAreaCd != null">
-                and T.SUBJ_AREA_CD = #{subjAreaCd}
+                and (S.SUBJ_AREA_CD = #{subjAreaCd} or S.HGRNK_SUBJ_AREA_CD = #{subjAreaCd})
             </if>
             )
         </if>

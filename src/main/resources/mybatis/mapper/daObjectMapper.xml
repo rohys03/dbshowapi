@@ -27,7 +27,7 @@
 
     <select id="getTableList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.object.DaTableVO">
         SELECT /* daObjectMapper.xml/getTableList by rohys03 */
-          /*+ LEADING(D T) */
+          /*+ LEADING(D S T) USE_NL(T) */
           D.DB_NM dbName,
           T.DB_ID dbId,
           T.OWNER owner,
@@ -38,9 +38,11 @@
           T.TABLE_COMMENTS tableComments,
           T.TABLE_CREATE_DT tableCreateDt,
           T.STD_OBJ_YN standardObjectYn,
-          T.SUBJ_AREA_CD subjAreaCd
-        From DAUSER.DA_DB_LIST D, DAUSER.DA_TABLES T
+          S.SUBJ_AREA_CD subjAreaCd,
+          S.HGRNK_SUBJ_AREA_CD hgrnkSubjAreaCd
+        From DAUSER.DA_DB_LIST D, DAUSER.DA_TABLES T, DAUSER.DA_TAB_SUBJ_AREA S
         WHERE D.DB_ID = T.DB_ID
+        AND T.SUBJ_AREA_CD = S.SUBJ_AREA_CD
         <if test="dbId != null">
             and T.DB_ID = #{dbId}
         </if>
@@ -50,16 +52,10 @@
         <if test="tableName != null">
             and T.TABLE_NAME = #{tableName}
         </if>
-        <if test="logicalAreaCd != null">
-            and T.LOGIC_AREA_CD = #{logicalAreaCd}
-        </if>
-        <if test="logicalAreaCd2 != null">
-            and T.LOGIC_AREA_CD2 = #{logicalAreaCd2}
-        </if>
         <if test="subjAreaCd != null">
-            and T.SUBJ_AREA_CD = #{subjAreaCd}
+            and (S.SUBJ_AREA_CD = #{subjAreaCd} or S.HGRNK_SUBJ_AREA_CD = #{subjAreaCd})
         </if>
-        ORDER BY T.LOGIC_AREA_CD nulls last, T.LOGIC_AREA_CD2 nulls first
+        ORDER BY D.DB_ID, S.HGRNK_SUBJ_AREA_CD nulls last, S.SUBJ_AREA_CD nulls first
     </select>
 
     <select id="getAreaCdList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.object.AreaInfoVO">
@@ -80,10 +76,10 @@
 
     <select id="getDaTabSubjAreaList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.object.DaTabSubjAreaVO">
         SELECT
-            nvl(HGRNK_SUBJ_AREA_CD, A.SUBJ_AREA_CD) hgrnkSubjAreaCd
+             A.HGRNK_SUBJ_AREA_CD hgrnkSubjAreaCd
             , A.SUBJ_AREA_CD subjAreaCd
-            , nvl(HGRNK_SUBJ_AREA_CD, A.SUBJ_AREA_CD) logicalAreaCd
-            , decode(A.HGRNK_SUBJ_AREA_CD, null, null, A.SUBJ_AREA_CD) logicalAreaCd2
+            , A.HGRNK_SUBJ_AREA_CD logicalAreaCd
+            , A.SUBJ_AREA_CD logicalAreaCd2
             , A.SUBJ_AREA_NM subjAreaName
             , A.SUBJ_AREA_ENG_NM subjAreaEngName
             , phscl_area_Cd phsclSubjAreaCd
@@ -108,15 +104,14 @@
             Group by SUBJ_AREA_CD
         ) B, DA_TAB_SUBJ_AREA A
         WHERE A.SUBJ_AREA_CD = B.SUBJ_AREA_CD(+)
-
         <if test="subjAreaCd != null">
-            and A.SUBJ_AREA_CD = #{subjAreaCd}
+            and (A.SUBJ_AREA_CD = #{subjAreaCd} OR A.HGRNK_SUBJ_AREA_CD = #{subjAreaCd})
         </if>
         <if test="hgrnkSubjAreaCd != null">
             and A.HGRNK_SUBJ_AREA_CD = #{hgrnkSubjAreaCd}
         </if>
         and A.USE_YN = 'Y'
-        order by HGRNK_SUBJ_AREA_CD, AREA_DEPTH
+        order by A.HGRNK_SUBJ_AREA_CD, AREA_DEPTH
      </select>
 
 </mapper>
