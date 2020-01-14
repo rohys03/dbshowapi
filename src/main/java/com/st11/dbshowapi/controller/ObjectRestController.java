@@ -63,6 +63,27 @@ public class ObjectRestController {
         return daTableVOList;
     }
 
+    @GetMapping(value = {"daTabModification"})
+    public List<DaTableVO> daTabModification(
+            @RequestParam(value = "dbId", required = false) final String dbId,
+            @RequestParam(value = "dbName", required = false) final String dbName,
+            @RequestParam(value = "tableName", required = false) final String tableName
+    ) {
+
+        List<DaTableVO> daTableVOList = null;
+
+        HashMap<String, Object> inParam = new HashMap<>();
+
+        if (dbId != null) inParam.put("dbId", dbId);
+        if (dbName != null) inParam.put("dbName", dbName);
+        if (tableName != null) inParam.put("tableName", tableName);
+
+        System.out.println("/api/daTableList/:" + inParam.toString());
+        daTableVOList = objectService.getDaTabModification(inParam);
+
+        return daTableVOList;
+    }
+
 
     @GetMapping(value = {"logicalArea"})
     public List<AreaInfoVO> logicalArea(

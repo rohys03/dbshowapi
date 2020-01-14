@@ -24,6 +24,11 @@ public class ObjectServiceImpl implements ObjectService {
     }
 
     @Override
+    public List<DaTableVO> getDaTabModification(HashMap<String, Object> inparam) {
+        return daObjectMapper.getDaTabModification(inparam);
+    }
+
+    @Override
     public List<AreaInfoVO> getAreaCdList(HashMap<String, Object> inparam) {
         return daObjectMapper.getAreaCdList(inparam);
     }

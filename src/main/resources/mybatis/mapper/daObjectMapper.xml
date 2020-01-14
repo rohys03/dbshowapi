@@ -59,11 +59,12 @@
     </select>
 
     <select id="getAreaCdList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.object.AreaInfoVO">
-        <![CDATA[
         SELECT
           nvl(Logic_area_cd, 'Undefined') areaCd1,
           Logic_area_cd2 areaCd2,
+          <![CDATA[
           Count(*) allInstanceCnt,
+          ]]>
           sum(decode(db_id, 1, 1, 0)) db1Cnt,
           sum(decode(db_id, 4, 1, 0)) db2Cnt,
           sum(decode(db_id, 5, 1, 0)) db3Cnt,
@@ -71,7 +72,21 @@
         From dauser.da_tables
         Group by logic_area_cd, logic_area_cd2
         Order by logic_area_cd nulls last, logic_area_cd2 nulls first
-        ]]>
+    </select>
+
+    <select id="getDaTabModification" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.object.DaTableVO">
+        Select
+              T.DB_ID dbId
+            , T.OWNER owner
+            , T.TABLE_NAME tableName
+            , Trunc(Avg(INSERT_OCCR_CNT)) insertOccrCnt
+            , Trunc(avg(UPDATE_OCCR_CNT)) updateOccrCnt
+            , Trunc(avg(DELETE_OCCR_CNT)) deleteOccrCnt
+        From DAUSER.DA_TABLES T, DAUSER.DA_TAB_MODIF M
+        where T.db_id = 1 and T.owner = 'TMALL' and T.TABLE_NAME = 'MT_CUPN'
+        and T.db_id = M.DB_ID and T.owner = M.OWNER and T.TABLE_NAME = M.TABLE_NAME
+        and M.CLCT_DY >= to_Char(sysdate - 7, 'yyyymmdd')
+        GROUP BY T.DB_ID, T.owner , T.TABLE_NAME
     </select>
 
     <select id="getDaTabSubjAreaList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.object.DaTabSubjAreaVO">
