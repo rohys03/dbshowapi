@@ -83,8 +83,13 @@
             , Trunc(avg(UPDATE_OCCR_CNT)) updateOccrCnt
             , Trunc(avg(DELETE_OCCR_CNT)) deleteOccrCnt
         From DAUSER.DA_TABLES T, DAUSER.DA_TAB_MODIF M
-        where T.db_id = 1 and T.owner = 'TMALL' and T.TABLE_NAME = 'MT_CUPN'
-        and T.db_id = M.DB_ID and T.owner = M.OWNER and T.TABLE_NAME = M.TABLE_NAME
+        where 1=1
+        and T.db_id = #{dbId}
+        and T.owner = #{owner}
+        and T.TABLE_NAME = #{tableName}
+        and T.db_id = M.DB_ID
+        and T.owner = M.OWNER
+        and T.TABLE_NAME = M.TABLE_NAME
         and M.CLCT_DY >= to_Char(sysdate - 7, 'yyyymmdd')
         GROUP BY T.DB_ID, T.owner , T.TABLE_NAME
     </select>
