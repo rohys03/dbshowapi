@@ -5,7 +5,7 @@
 <mapper namespace="com.st11.dbshowapi.repository.object.DaObjectMapper">
 
     <select id="getSyncTableList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.object.DaSyncTableVO">
-        Select /* DaSyncTablesMapper.xml/getSyncTableList - ns: DaSyncTablesMapper by rohys03 */
+        Select /* daObjectMapper.xml/getSyncTableList - ns: DaSyncTablesMapper by rohys03 */
             distinct SRC_DB sourceDb
             , TABLE_OWNER owner
             , TABLE_NM tableName
@@ -59,7 +59,7 @@
     </select>
 
     <select id="getAreaCdList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.object.AreaInfoVO">
-        SELECT
+        SELECT /* daObjectMapper.xml/getAreaCdList by rohys03 */
           nvl(Logic_area_cd, 'Undefined') areaCd1,
           Logic_area_cd2 areaCd2,
           <![CDATA[
@@ -75,7 +75,7 @@
     </select>
 
     <select id="getDaTabModification" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.object.DaTableVO">
-        Select
+        Select /* daObjectMapper.xml/getDaTabModification by rohys03 */
               T.DB_ID dbId
             , T.OWNER owner
             , T.TABLE_NAME tableName
@@ -95,7 +95,7 @@
     </select>
 
     <select id="getDaTabSubjAreaList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.object.DaTabSubjAreaVO">
-        SELECT
+        SELECT /* daObjectMapper.xml/getDaTabSubjAreaList by rohys03 */
              A.HGRNK_SUBJ_AREA_CD hgrnkSubjAreaCd
             , A.SUBJ_AREA_CD subjAreaCd
             , A.HGRNK_SUBJ_AREA_CD logicalAreaCd

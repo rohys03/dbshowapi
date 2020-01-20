@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.st11.dbshowapi.repository.dam.DamMapper">
+
+    <select id="getDamEntityList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.dam.DamEntityVO">
+        WITH container AS (SELECT level lvl
+        , dm.*
+        , TO_CHAR(SYSDATE, 'yyyymmddhh24miss') AS regdate
+        From   dauser.dam_mdl_container dm
+        Where  1=1
+        -- START WITH (dm.upr_stru_id IS NULL OR     dm.upr_stru_id = '')
+        START WITH (upper(dm.stru_nm) like 'OP_ST11%')
+        And    dm.aval_end_dt = '99991231235959'
+        CONNECT BY dm.upr_stru_id = PRIOR dm.stru_id And dm.aval_end_dt = '99991231235959')
+        select /* damMapper.xml/getDamEntityList by rohys03 */
+            /*+ LEADING(C O M) USE_MERGE(O) USE_NL(M) */
+            p.SBJ_FLD_ID subjFieldId
+            , m.mdl_id modelId
+            , o.TBL_NM tableName
+            , o.ENT_NM entityName
+            , decode(o.share_type, 1, 'Export', 2, 'Import', '') entityShareType
+            , decode(o.stnd_type, 0, '대상', 2, '비대상', '') entityStandardType
+            , DECODE(o.ent_vrtl_type, 0, 'Normal', 1, 'Pseudo', 2, 'Additional', 3, 'External', 4, 'Drop Entity' ) entityType
+            , dauser.md_etc_v5.get_area_path_nm(c.stru_id, ' > ') subjAreaNamePath
+            , P.MOD_DT modifyDt
+        From
+        container c
+        , dauser.dam_pane p
+        , dauser.dam_mdl_info m
+        , dauser.dam_pane_sub_obj ps
+        , dauser.dam_ent_obj o
+        WHERE 1=1
+        and    c.mdl_id = p.mdl_id
+        And    c.stru_id = p.sbj_fld_id
+        And    c.regdate between m.aval_st_dt and m.aval_end_dt
+        And    c.regdate between ps.aval_st_dt and ps.aval_end_dt
+        And    c.regdate between o.aval_st_dt and o.aval_end_dt
+        And    c.regdate between p.aval_st_dt and p.aval_end_dt
+        and    m.mdl_id = p.mdl_id
+        And    p.pane_type = 4
+        and    ps.mdl_id = p.mdl_id
+        And    ps.pane_id = p.pane_id
+        And    ps.type in (100, 104)
+        and    o.mdl_id = m.mdl_id
+        and    o.mdl_id = p.mdl_id
+        and    o.mdl_id = ps.mdl_id
+        And    o.ent_id = ps.obj_id
+        And    o.type in (100, 104)
+        --And    LPAD(o.ent_vrtl_type, 4, '0') = '0000'
+        and UPPER(o.tbl_nm) LIKE UPPER( #{tableName} )
+        --And    (UPPER(o.ent_nm) LIKE UPPER(:ent_nm )
+        --        OR     UPPER(o.tbl_nm) LIKE UPPER(:ent_nm ))
+        Order by P.MOD_DT desc
+    </select>
+
+</mapper>
