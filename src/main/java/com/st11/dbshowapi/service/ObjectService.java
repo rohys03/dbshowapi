@@ -13,7 +13,7 @@ public interface ObjectService {
     List<DaSyncTableVO> getSyncTableList(HashMap<String, Object> inparam);
 
     List<DaTableVO> getTableList(HashMap<String, Object> inparam);
-    List<DaTableVO> getDaTabModification(HashMap<String, Object> inparam);
+    DaTableVO getDaTabModification(HashMap<String, Object> inparam);
 
     List<AreaInfoVO> getAreaCdList(HashMap<String, Object> inparam);
 

@@ -24,7 +24,7 @@ public class ObjectServiceImpl implements ObjectService {
     }
 
     @Override
-    public List<DaTableVO> getDaTabModification(HashMap<String, Object> inparam) {
+    public DaTableVO getDaTabModification(HashMap<String, Object> inparam) {
         return daObjectMapper.getDaTabModification(inparam);
     }
 

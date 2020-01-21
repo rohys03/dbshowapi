@@ -64,14 +64,14 @@ public class ObjectRestController {
     }
 
     @GetMapping(value = {"daTabModification"})
-    public List<DaTableVO> daTabModification(
+    public DaTableVO daTabModification(
             @RequestParam(value = "dbId", required = false) final String dbId,
             @RequestParam(value = "dbName", required = false) final String dbName,
             @RequestParam(value = "owner", required = false) final String owner,
             @RequestParam(value = "tableName", required = false) final String tableName
     ) {
 
-        List<DaTableVO> daTableVOList = null;
+        DaTableVO daTableVO = null;
 
         HashMap<String, Object> inParam = new HashMap<>();
 
@@ -81,9 +81,9 @@ public class ObjectRestController {
         if (tableName != null) inParam.put("tableName", tableName);
 
         System.out.println("/api/daTableList/:" + inParam.toString());
-        daTableVOList = objectService.getDaTabModification(inParam);
+        daTableVO = objectService.getDaTabModification(inParam);
 
-        return daTableVOList;
+        return daTableVO;
     }
 
 
