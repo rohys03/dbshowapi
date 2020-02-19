@@ -472,8 +472,10 @@
                 , count(distinct plan_hash_value) plan_cnt
                 , sum(executions_delta) executions_sum
                 , sum(buffer_gets_delta) buffer_gets_sum
-                , round(sum(cpu_time_delta) / 1000000, 2) cpu_time_sum
-                , round(sum(elapsed_time_delta) / 1000000, 2) elaps_time_sum
+                , sum(cpu_time_delta) cpu_time_sum
+                , sum(elapsed_time_delta) elaps_time_sum
+        /*                , round(sum(cpu_time_delta) / 1000000, 2) cpu_time_sum
+        , round(sum(elapsed_time_delta) / 1000000, 2) elaps_time_sum*/
                 , case when sum(executions_delta) <![CDATA[ <=0 ]]> then null
                 else round(sum(buffer_gets_delta) / sum(executions_delta), 4) end buffer_gets_avg
                 , case when sum(executions_delta) <![CDATA[ <=0 ]]> then null
@@ -495,8 +497,10 @@
                 , count(distinct plan_hash_value) plan_cnt
                 , sum(executions_delta) executions_sum
                 , sum(buffer_gets_delta) buffer_gets_sum
-                , round(sum(cpu_time_delta) / 1000000, 2) cpu_time_sum
-                , round(sum(elapsed_time_delta) / 1000000, 2) elaps_time_sum
+                , sum(cpu_time_delta) cpu_time_sum
+                , sum(elapsed_time_delta) elaps_time_sum
+/*                , round(sum(cpu_time_delta) / 1000000, 2) cpu_time_sum
+                , round(sum(elapsed_time_delta) / 1000000, 2) elaps_time_sum*/
                 , case when sum(executions_delta) <![CDATA[ <=0 ]]> then null
                 else round(sum(buffer_gets_delta) / sum(executions_delta), 4) end buffer_gets_avg
                 , case when sum(executions_delta)<![CDATA[ <=0 ]]> then null

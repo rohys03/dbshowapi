@@ -191,7 +191,7 @@ public class SqlRestController {
         if (orderString != null) inParam.put("orderString", orderString);
         if (ascending != null) inParam.put("ascending", ascending);
 
-        System.out.println("/api/sqlName/:" + inParam.toString());
+        System.out.println("/api/topSqlDayList/:" + inParam.toString());
         if (!inParam.isEmpty()) {
             SqlAreaDiffVOList = sqasService.getTopSqlDayList(inParam);
         }
@@ -216,7 +216,7 @@ public class SqlRestController {
         if (clctDy2 != null) inParam.put("clctDy2", clctDy2);
         if (orderString != null) inParam.put("orderString", orderString);
 
-        System.out.println("/api/sqlName/:" + inParam.toString());
+        System.out.println("/api/topSqlDayListByAwr/:" + inParam.toString());
         if (!inParam.isEmpty()) {
             SqlAreaDiffVOList = sqasService.getTopSqlDayListByAwr(inParam);
         }
