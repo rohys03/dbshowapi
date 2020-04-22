@@ -149,11 +149,13 @@
             update_dt updateDt
         FROM DAUSER.DA_DAM_TAB_COLS T
         Where 1=1
+        <if test="tableName != null">
+            and T.tbl_nm = #{tableName}
+        </if>
         <if test="securityYn != null">
-        and T.SCRT_YN = 'Y'
+            and T.SCRT_YN = #{securityYn}
         </if>
         order by TBL_NM, SEQ
     </select>
-
 
 </mapper>

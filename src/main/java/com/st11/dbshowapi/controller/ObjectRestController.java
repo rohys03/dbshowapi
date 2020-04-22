@@ -116,11 +116,14 @@ public class ObjectRestController {
     }
     @GetMapping(value = {"daDamTabColumns"})
     public List<DaDamTabColsVO> daDamTabColumns(
-            @RequestParam(value = "securityYn", required = false) final String securityYn) {
+            @RequestParam(value = "tableName", required = false) final String tableName,
+            @RequestParam(value = "securityYn", required = false) final String securityYn
+    ) {
 
         List<DaDamTabColsVO> daDamTabColsVOS = null;
 
         HashMap<String, Object> inParam = new HashMap<>();
+        if (tableName != null) inParam.put("tableName", tableName);
         if (securityYn != null) inParam.put("securityYn", securityYn);
 
         System.out.println("/api/daDamTabColumns/:" + inParam.toString());
