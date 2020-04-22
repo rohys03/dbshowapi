@@ -1,9 +1,6 @@
 package com.st11.dbshowapi.controller;
 
-import com.st11.dbshowapi.repository.object.AreaInfoVO;
-import com.st11.dbshowapi.repository.object.DaSyncTableVO;
-import com.st11.dbshowapi.repository.object.DaTabSubjAreaVO;
-import com.st11.dbshowapi.repository.object.DaTableVO;
+import com.st11.dbshowapi.repository.object.*;
 import com.st11.dbshowapi.service.ObjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -111,10 +108,25 @@ public class ObjectRestController {
         HashMap<String, Object> inParam = new HashMap<>();
         if (subjAreaCd != null) inParam.put("subjAreaCd", subjAreaCd);
 
-        System.out.println("/api/logicalArea/:" + inParam.toString());
+        System.out.println("/api/daTabSubjAreaList/:" + inParam.toString());
 
         daTabSubjAreaVOS = objectService.getDaTabSubjAreaList(inParam);
 
         return daTabSubjAreaVOS;
+    }
+    @GetMapping(value = {"daDamTabColumns"})
+    public List<DaDamTabColsVO> daDamTabColumns(
+            @RequestParam(value = "securityYn", required = false) final String securityYn) {
+
+        List<DaDamTabColsVO> daDamTabColsVOS = null;
+
+        HashMap<String, Object> inParam = new HashMap<>();
+        if (securityYn != null) inParam.put("securityYn", securityYn);
+
+        System.out.println("/api/daDamTabColumns/:" + inParam.toString());
+
+        daDamTabColsVOS = objectService.getDaDamTabColumns(inParam);
+
+        return daDamTabColsVOS;
     }
 }

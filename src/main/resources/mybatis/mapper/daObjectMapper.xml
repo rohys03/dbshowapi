@@ -96,32 +96,32 @@
 
     <select id="getDaTabSubjAreaList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.object.DaTabSubjAreaVO">
         SELECT /* daObjectMapper.xml/getDaTabSubjAreaList by rohys03 */
-             A.HGRNK_SUBJ_AREA_CD hgrnkSubjAreaCd
-            , A.SUBJ_AREA_CD subjAreaCd
-            , A.HGRNK_SUBJ_AREA_CD logicalAreaCd
-            , A.SUBJ_AREA_CD logicalAreaCd2
-            , A.SUBJ_AREA_NM subjAreaName
-            , A.SUBJ_AREA_ENG_NM subjAreaEngName
-            , phscl_area_Cd phsclSubjAreaCd
-            , AREA_DEPTH areaDepth
-            , SUBJ_AREA_DESC subjAreaDesc
-            , TABLE_CNT tableCount
-            , SQL_CNT sqlCount
+        A.HGRNK_SUBJ_AREA_CD hgrnkSubjAreaCd
+        , A.SUBJ_AREA_CD subjAreaCd
+        , A.HGRNK_SUBJ_AREA_CD logicalAreaCd
+        , A.SUBJ_AREA_CD logicalAreaCd2
+        , A.SUBJ_AREA_NM subjAreaName
+        , A.SUBJ_AREA_ENG_NM subjAreaEngName
+        , phscl_area_Cd phsclSubjAreaCd
+        , AREA_DEPTH areaDepth
+        , SUBJ_AREA_DESC subjAreaDesc
+        , TABLE_CNT tableCount
+        , SQL_CNT sqlCount
         FROM (
-            SELECT
-                    B.SUBJ_AREA_CD
-                    , COUNT(distinct Table_name) TABLE_CNT
-                    , COUNT(distinct sql_id) SQL_CNT
-                    , wm_concat(distinct phscl_area_Cd) phscl_area_Cd
-            FROM  DA_SQL_DEPENDENCY A, DA_TABLES B
-            WHERE 1=1
-            AND   A.CLCT_DY(+) = TO_CHAR(SYSDATE,'YYYYMMDD')
-            AND   A.OBJECT_NAME(+) = B.TABLE_NAME
-            AND   A.OWNER(+) = B.OWNER
-            AND   A.DB_NM(+) = 'TMALL'
-            AND   A.OBJECT_TYPE(+) ='TABLE'
-            AND   B.DB_ID = 1
-            Group by SUBJ_AREA_CD
+        SELECT
+        B.SUBJ_AREA_CD
+        , COUNT(distinct Table_name) TABLE_CNT
+        , COUNT(distinct sql_id) SQL_CNT
+        , wm_concat(distinct phscl_area_Cd) phscl_area_Cd
+        FROM  DA_SQL_DEPENDENCY A, DA_TABLES B
+        WHERE 1=1
+        AND   A.CLCT_DY(+) = TO_CHAR(SYSDATE,'YYYYMMDD')
+        AND   A.OBJECT_NAME(+) = B.TABLE_NAME
+        AND   A.OWNER(+) = B.OWNER
+        AND   A.DB_NM(+) = 'TMALL'
+        AND   A.OBJECT_TYPE(+) ='TABLE'
+        AND   B.DB_ID = 1
+        Group by SUBJ_AREA_CD
         ) B, DA_TAB_SUBJ_AREA A
         WHERE A.SUBJ_AREA_CD = B.SUBJ_AREA_CD(+)
         <if test="subjAreaCd != null">
@@ -132,6 +132,28 @@
         </if>
         and A.USE_YN = 'Y'
         order by A.HGRNK_SUBJ_AREA_CD, AREA_DEPTH
-     </select>
+    </select>
+
+    <select id="getDaDamTabColumns" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.object.DaDamTabColsVO">
+        SELECT /* daObjectMapper.xml/getDaDamTabColumns by rohys03 */
+            tbl_nm tableName,
+            ent_nm  entityName,
+            col_nm  columnName,
+            attr_nm attributeName,
+            seq seq,
+            scrt_yn securityYn,
+            stru_nm structName,
+            mdl_id  modelId,
+            sbj_fld_id  subjFieldId,
+            create_dt createDt,
+            update_dt updateDt
+        FROM DAUSER.DA_DAM_TAB_COLS T
+        Where 1=1
+        <if test="securityYn != null">
+        and T.SCRT_YN = 'Y'
+        </if>
+        order by TBL_NM, SEQ
+    </select>
+
 
 </mapper>

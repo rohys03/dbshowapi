@@ -36,6 +36,11 @@ public class ObjectServiceImpl implements ObjectService {
     @Override
     public List<DaTabSubjAreaVO> getDaTabSubjAreaList(HashMap<String, Object> inparam) {
         return daObjectMapper.getDaTabSubjAreaList(inparam);
-    };
+    }
+
+    @Override
+    public List<DaDamTabColsVO> getDaDamTabColumns(HashMap<String, Object> inparam) {
+        return daObjectMapper.getDaDamTabColumns(inparam);
+    }
 
 }

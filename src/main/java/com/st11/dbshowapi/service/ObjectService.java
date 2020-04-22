@@ -1,9 +1,6 @@
 package com.st11.dbshowapi.service;
 
-import com.st11.dbshowapi.repository.object.AreaInfoVO;
-import com.st11.dbshowapi.repository.object.DaSyncTableVO;
-import com.st11.dbshowapi.repository.object.DaTabSubjAreaVO;
-import com.st11.dbshowapi.repository.object.DaTableVO;
+import com.st11.dbshowapi.repository.object.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,4 +15,6 @@ public interface ObjectService {
     List<AreaInfoVO> getAreaCdList(HashMap<String, Object> inparam);
 
     List<DaTabSubjAreaVO> getDaTabSubjAreaList(HashMap<String, Object> inparam);
+
+    List<DaDamTabColsVO> getDaDamTabColumns(HashMap<String, Object> inparam);
 }

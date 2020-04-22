@@ -16,5 +16,6 @@ public interface DaObjectMapper {
     List<AreaInfoVO> getAreaCdList(HashMap<String, Object> inparam);
     List<DaTabSubjAreaVO> getDaTabSubjAreaList(HashMap<String, Object> inparam);
     DaTableVO getDaTabModification(HashMap<String, Object> inparam);
+    List<DaDamTabColsVO> getDaDamTabColumns(HashMap<String, Object> inparam);
 }
 

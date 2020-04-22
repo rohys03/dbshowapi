@@ -525,10 +525,6 @@
         and cur.sql_id = bef.sql_id(+)
         And cur.db_id = D.db_id(+)
         order by rank
-        /*      cur.executions_rank
-            , cur.buffer_gets_rank
-            , cur.cpu_time_rank
-            , cur.elaps_time_rank*/
     </select>
 
 
