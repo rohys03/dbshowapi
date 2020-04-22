@@ -77,7 +77,7 @@ public class ObjectRestController {
         if (owner != null) inParam.put("owner", owner);
         if (tableName != null) inParam.put("tableName", tableName);
 
-        System.out.println("/api/daTableList/:" + inParam.toString());
+        System.out.println("/api/daTabModification/:" + inParam.toString());
         daTableVO = objectService.getDaTabModification(inParam);
 
         return daTableVO;

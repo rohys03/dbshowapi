@@ -16,7 +16,7 @@ public class DaTableVO {
     private String standardObjectYn;
     private String subjAreaCd;
     private String hgrnkSubjAreaCd;
-    private Integer insertOccrCnt;
-    private Integer updateOccrCnt;
-    private Integer deleteOccrCnt;
+    private long insertOccrCnt;
+    private long updateOccrCnt;
+    private long deleteOccrCnt;
 }
