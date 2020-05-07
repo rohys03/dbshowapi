@@ -193,7 +193,7 @@
         And    l.sql_id = s.sql_id(+)
         And    l.db_id = s.db_id(+)
         <if test="clctDy != null">
-        And    s.CLCT_DY(+) = #{clctDy}
+        And    s.CLCT_DY = #{clctDy}
         </if>
         <if test="tableName != null">
         And    (l.db_id, l.sql_id) in (select /*+ unnest leading(info) use_hash(t) index(INFO ) */info.db_id, info.sql_id
@@ -245,7 +245,7 @@
         where 1=1
         and l.SQL_NAME_NO = s.SQL_NAME_NO(+)
         and l.db_id = s.db_id(+)
-        and s.CLCT_DY(+) = #{clctDy}
+        and s.CLCT_DY = #{clctDy}
         <if test="sqlName != null">
             AND S.SQL_NAME_NO in (select sql_name_no from dauser.da_sqlname_list where upper(sql_name) like upper( '%'||#{sqlName}||'%' ) )
         </if>
