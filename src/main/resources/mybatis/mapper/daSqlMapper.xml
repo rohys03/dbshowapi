@@ -160,6 +160,61 @@
         ]]>
     </select>
 
+
+    <select id="getSqlIdList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.sql.SqlIdVO">
+        Select /* daSqlMapper.xml/getSqlIdList - ns: by rohys03 */ /*+ ORDERED USE_NL(L S) INDEX(L PK_DA_SQLID_LIST)  */L.SQL_NAME sqlName
+             , L.SQL_ID sqlId
+             , L.Parsing_schema_name parsingSchemaName
+             , l.Module module
+             , l.Last_active_time LastActiveTime
+             , l.program_id programId
+             , S.CLCT_DY clctDy
+             , S.DB_ID dbId
+             , l.SQL_NAME_NO sqlNameNo
+             , S.CURR_TOTAL_EXEC currTotalExec
+             , S.PREV_TOTAL_EXEC prevTotalExec
+             , S.EXEC_DIFF execDiff
+             , S.CURR_TOTAL_BGET currTotalBget
+             , S.PREV_TOTAL_BGET prevTotalBget
+             , S.BGET_DIFF bgetDiff
+             , S.CURR_TOTAL_CPU currTotalCpu
+             , S.PREV_TOTAL_CPU prevTotalCpu
+             , S.CPU_DIFF cpuDiff
+             , S.CURR_TOTAL_ELA currTotalElap
+             , S.PREV_TOTAL_ELA prevTotalElap
+             , S.ELA_DIFF elapDiff
+             , S.CURR_CLCT_DY currClctDy
+             , S.PREV_CLCT_DY prevClctDy
+             , S.CREATE_DT createDt
+        From   dauser.da_sqlid_list L
+             , dauser.da_sqlid_stats s
+        Where  1=1
+        And    l.sql_id = s.sql_id(+)
+        And    l.db_id = s.db_id(+)
+        <if test="clctDy != null">
+        And    s.CLCT_DY(+) = #{clctDy}
+        </if>
+        <if test="tableName != null">
+        And    (l.db_id, l.sql_id) in (select /*+ unnest leading(info) use_hash(t) index(INFO ) */info.db_id, info.sql_id
+                From   DAuser.da_sql_dependency Info
+                     , dauser.da_tables t
+                Where  info.owner = t.owner(+)
+                And    info.object_name = t.table_name(+)
+                And    object_type = 'TABLE'
+                <if test="owner != null">
+                And    info.owner = #{owner}
+                </if>
+                And    info.object_name = #{tableName}
+                <if test="clctDy != null">
+                AND    INFO.CLCT_DY = #{clctDy}
+                </if>
+                Group by info.db_id, info.sql_id
+                )
+        </if>
+        ORDER BY execDiff desc nulls last;
+
+    </select>
+
     <select id="getSqlNameList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.sql.SqlNameVO">
         Select /* daSqlMapper.xml/getSqlNameList - ns: by rohys03 */
               /*+ ORDERED USE_NL(L S) INDEX(L PK_DA_SQLNAME_LIST)  */
@@ -190,9 +245,9 @@
         where 1=1
         and l.SQL_NAME_NO = s.SQL_NAME_NO(+)
         and l.db_id = s.db_id(+)
-        and s.CLCT_DY = #{clctDy}
+        and s.CLCT_DY(+) = #{clctDy}
         <if test="sqlName != null">
-            AND S.SQL_NAME_NO in (select sql_name_no from dauser.da_sqlname_list where sql_name like '%'||#{sqlName}||'%' )
+            AND S.SQL_NAME_NO in (select sql_name_no from dauser.da_sqlname_list where upper(sql_name) like upper( '%'||#{sqlName}||'%' ) )
         </if>
 
         <if test="tableName != null">
@@ -202,11 +257,9 @@
             where info.owner = t.owner(+)
             and info.object_name = t.table_name(+)
             and object_type = 'TABLE'
+            and info.object_name = #{tableName}
             <if test="owner != null">
                 and info.owner = #{owner}
-            </if>
-            <if test="tableName != null">
-                and info.object_name = #{tableName}
             </if>
             )
         </if>
@@ -264,7 +317,7 @@
         </if>
         <if test="sqlName != null">
             <![CDATA[
-        AND S.SQL_NAME_NO in (select sql_name_no from dauser.da_sqlname_list where sql_name like '%'||#{sqlName}||'%' )
+        AND S.SQL_NAME_NO in (select sql_name_no from dauser.da_sqlname_list where upper(sql_name) like upper('%'||#{sqlName}||'%') )
         ]]>
         </if>
         <if test="sqlNameNo != null">
@@ -291,7 +344,7 @@
         </if>
         <if test="sqlName != null">
             <![CDATA[
-        AND S.sql_name like '%'||#{sqlName}||'%' )
+        AND upper(S.sql_name) like upper('%'||#{sqlName}||'%') )
         ]]>
         </if>
         <if test="sqlNameNo != null">
@@ -321,7 +374,7 @@
         and a.sql_name_no = #{sqlNameNo}
         </if>
         <if test="sqlName != null">
-            AND a.sql_name = #{sqlName}
+            AND upper(a.sql_name) = upper( #{sqlName} )
         </if>
         <if test="dbId != null">
             AND M.DB_ID = #{dbId}
@@ -351,7 +404,7 @@
         FROM DAUSER.DA_SQLNAME_MAPP M
         WHERE 1=1
         and part_cd = #{partCd}
-        and sql_name = #{sqlName}
+        and upper(sql_name) = upper( #{sqlName} )
         <if test="clctDy != null">
             AND clct_Dy = #{clctDy}
         </if>

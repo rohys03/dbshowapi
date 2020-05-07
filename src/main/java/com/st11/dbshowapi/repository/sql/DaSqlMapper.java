@@ -18,8 +18,11 @@ public interface DaSqlMapper {
 
 //    List<TopSqlVO> getTopSqlList(HashMap<String, Object> inParam);
 
+    List<SqlIdVO> getSqlIdList(HashMap<String, Object> inParam);
+
     List<SqlNameVO> getSqlName(HashMap<String, Object> inParam);
     List<SqlNameVO> getSqlNameList(HashMap<String, Object> inParam);
+
     List<SqlNameStatsVO> getSqlNameStats(HashMap<String, Object> inParam);
     List<SqlNameStatsVO> getSqlNameStatsHist(HashMap<String, Object> inParam);
 

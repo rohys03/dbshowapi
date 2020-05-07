@@ -1,7 +1,7 @@
 package com.st11.dbshowapi.controller;
 
 import com.st11.dbshowapi.repository.sql.*;
-import com.st11.dbshowapi.service.SqasService;
+import com.st11.dbshowapi.service.SqlService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +15,7 @@ import static com.st11.dbshowapi.common.Dbshow.isNullOrEmpty;
 public class SqlRestController {
 
     @Autowired
-    SqasService sqasService;
+    SqlService sqlService;
 
     @RequestMapping(value = {"sqlApplicationList/{dbName}/{commandType}/{owner}/{tableName}"})
     public List<SqlAreaVO> sqlApplicationList(
@@ -31,9 +31,9 @@ public class SqlRestController {
         inParam.put("commandType", commandType);
 
         if (tableName != null && owner != null) {
-            sqlareaList = sqasService.getSqlAreaList(inParam);
+            sqlareaList = sqlService.getSqlAreaList(inParam);
         } else {
-            sqlareaList = sqasService.getSqlAreaListAll();
+            sqlareaList = sqlService.getSqlAreaListAll();
         }
 
         return sqlareaList;
@@ -55,7 +55,7 @@ public class SqlRestController {
         System.out.println("inparam1: " + inParam.toString());
 
         if (searchType != null && searchString != null) {
-            sqlAreaDetail = sqasService.getSqlAreaDetail(inParam);
+            sqlAreaDetail = sqlService.getSqlAreaDetail(inParam);
             System.out.println("inparam3: " + inParam.toString() + " sqlId: " + sqlAreaDetail.size());
         } else {
             return null;
@@ -64,6 +64,29 @@ public class SqlRestController {
         return sqlAreaDetail;
     }
 
+
+    @GetMapping(value = {"sqlIdList"})
+    public List<SqlIdVO> sqlIdList(
+            @RequestParam(value = "clctDy", required = false) final String clctDy,
+            @RequestParam(value = "owner", required = false) final String owner,
+            @RequestParam(value = "tableName", required = false) final String tableName,
+            @RequestParam(value = "sqlId", required = false) final String sqlId
+    ) {
+
+        List<SqlIdVO> sqlIdVOList = null;
+
+        HashMap<String, Object> inParam = new HashMap<>();
+
+        if (clctDy != null) inParam.put("clctDy", clctDy);
+        if (owner != null) inParam.put("owner", owner);
+        if (tableName != null) inParam.put("tableName", tableName);
+        if (sqlId != null) inParam.put("sqlId", sqlId);
+
+        System.out.println("/api/sqlIdList/:" + inParam.toString());
+        sqlIdVOList = sqlService.getSqlIdList(inParam);
+
+        return sqlIdVOList;
+    }
 
     @GetMapping(value = {"sqlNameList"})
     public List<SqlNameVO> sqlNameList(
@@ -89,7 +112,7 @@ public class SqlRestController {
         if (subjAreaCd != null) inParam.put("subjAreaCd", subjAreaCd);
 
         System.out.println("/api/sqlNameList/:" + inParam.toString());
-        sqlNameVOList = sqasService.getSqlNameList(inParam);
+        sqlNameVOList = sqlService.getSqlNameList(inParam);
 
         return sqlNameVOList;
     }
@@ -110,7 +133,7 @@ public class SqlRestController {
 
         System.out.println("/api/sqlName/:" + inParam.toString());
         if (!inParam.isEmpty()) {
-            sqlNameVOList = sqasService.getSqlName(inParam);
+            sqlNameVOList = sqlService.getSqlName(inParam);
         }
 
         return sqlNameVOList;
@@ -134,7 +157,7 @@ public class SqlRestController {
 
         System.out.println("/api/sqlNameStatsHist/:" + inParam.toString());
         if (!inParam.isEmpty()) {
-            sqlNameStatsVOList = sqasService.getSqlNameStatsHist(inParam);
+            sqlNameStatsVOList = sqlService.getSqlNameStatsHist(inParam);
         }
         System.out.println("sqlNameStatsVOList2: " + sqlNameStatsVOList.toString());
 
@@ -164,7 +187,7 @@ public class SqlRestController {
         System.out.println("/api/sqlNameMappSummary/:" + inParam.toString());
 
         if (!inParam.isEmpty()) {
-                sqlNameMappVO = sqasService.getSqlNameMappSummary(inParam);
+                sqlNameMappVO = sqlService.getSqlNameMappSummary(inParam);
         }
 
         SqlNameMappVO sql = (sqlNameMappVO == null) ? null : sqlNameMappVO;
@@ -193,7 +216,7 @@ public class SqlRestController {
 
         System.out.println("/api/topSqlDayList/:" + inParam.toString());
         if (!inParam.isEmpty()) {
-            SqlAreaDiffVOList = sqasService.getTopSqlDayList(inParam);
+            SqlAreaDiffVOList = sqlService.getTopSqlDayList(inParam);
         }
 
         return SqlAreaDiffVOList;
@@ -218,7 +241,7 @@ public class SqlRestController {
 
         System.out.println("/api/topSqlDayListByAwr/:" + inParam.toString());
         if (!inParam.isEmpty()) {
-            SqlAreaDiffVOList = sqasService.getTopSqlDayListByAwr(inParam);
+            SqlAreaDiffVOList = sqlService.getTopSqlDayListByAwr(inParam);
         }
 
         return SqlAreaDiffVOList;
