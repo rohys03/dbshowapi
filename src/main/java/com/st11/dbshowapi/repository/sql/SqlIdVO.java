@@ -15,8 +15,6 @@ public class SqlIdVO extends SqlNameStatsVO {
     String sqlId;
     String parsingSchemaName;
     String module;
-    String owner;
-    String tableName;
     String programId;
     Date LastActiveTime;
     Date createDt;

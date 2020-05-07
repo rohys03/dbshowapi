@@ -162,7 +162,8 @@
 
 
     <select id="getSqlIdList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.sql.SqlIdVO">
-        Select /* daSqlMapper.xml/getSqlIdList - ns: by rohys03 */ /*+ ORDERED USE_NL(L S) INDEX(L PK_DA_SQLID_LIST)  */L.SQL_NAME sqlName
+        Select /* daSqlMapper.xml/getSqlIdList - ns: by rohys03 */ /*+ ORDERED USE_NL(L S) INDEX(L PK_DA_SQLID_LIST)  */
+               L.SQL_NAME sqlName
              , L.SQL_ID sqlId
              , L.Parsing_schema_name parsingSchemaName
              , l.Module module
@@ -211,8 +212,7 @@
                 Group by info.db_id, info.sql_id
                 )
         </if>
-        ORDER BY execDiff desc nulls last;
-
+        ORDER BY execDiff desc nulls last
     </select>
 
     <select id="getSqlNameList" parameterType="hashmap" resultType="com.st11.dbshowapi.repository.sql.SqlNameVO">
